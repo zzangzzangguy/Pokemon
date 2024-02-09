@@ -157,6 +157,9 @@
 		B400DB3B2B761CDF00530566 /* Domain */ = {
 			isa = PBXGroup;
 			children = (
+				B400DB412B761FA600530566 /* Model */,
+				B400DB422B761FAA00530566 /* UseCase */,
+				B400DB432B761FB700530566 /* Interface */,
 			);
 			path = Domain;
 			sourceTree = "<group>";
@@ -172,6 +175,8 @@
 		B400DB3D2B761CF100530566 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				B400DB402B761F9C00530566 /* Network */,
+				B400DB3F2B761F9400530566 /* Repository */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -184,6 +189,41 @@
 				B400DB032B76187300530566 /* Info.plist */,
 			);
 			path = Resource;
+			sourceTree = "<group>";
+		};
+		B400DB3F2B761F9400530566 /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Repository;
+			sourceTree = "<group>";
+		};
+		B400DB402B761F9C00530566 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		B400DB412B761FA600530566 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		B400DB422B761FAA00530566 /* UseCase */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = UseCase;
+			sourceTree = "<group>";
+		};
+		B400DB432B761FB700530566 /* Interface */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Interface;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
