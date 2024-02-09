@@ -114,8 +114,7 @@
 		B400DAF42B76187200530566 /* Pokemon */ = {
 			isa = PBXGroup;
 			children = (
-				B400DAF52B76187200530566 /* AppDelegate.swift */,
-				B400DAF72B76187200530566 /* SceneDelegate.swift */,
+				B400DB3A2B761C9600530566 /* Application */,
 				B400DAF92B76187200530566 /* ViewController.swift */,
 				B400DAFB2B76187200530566 /* Main.storyboard */,
 				B400DAFE2B76187300530566 /* Assets.xcassets */,
@@ -147,6 +146,15 @@
 			children = (
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B400DB3A2B761C9600530566 /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				B400DAF52B76187200530566 /* AppDelegate.swift */,
+				B400DAF72B76187200530566 /* SceneDelegate.swift */,
+			);
+			path = Application;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
