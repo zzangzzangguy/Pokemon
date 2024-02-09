@@ -115,11 +115,12 @@
 			isa = PBXGroup;
 			children = (
 				B400DB3A2B761C9600530566 /* Application */,
+				B400DB3B2B761CDF00530566 /* Domain */,
+				B400DB3C2B761CE800530566 /* Presentation */,
+				B400DB3D2B761CF100530566 /* Data */,
+				B400DB3E2B761D3200530566 /* Resource */,
 				B400DAF92B76187200530566 /* ViewController.swift */,
 				B400DAFB2B76187200530566 /* Main.storyboard */,
-				B400DAFE2B76187300530566 /* Assets.xcassets */,
-				B400DB002B76187300530566 /* LaunchScreen.storyboard */,
-				B400DB032B76187300530566 /* Info.plist */,
 			);
 			path = Pokemon;
 			sourceTree = "<group>";
@@ -155,6 +156,37 @@
 				B400DAF72B76187200530566 /* SceneDelegate.swift */,
 			);
 			path = Application;
+			sourceTree = "<group>";
+		};
+		B400DB3B2B761CDF00530566 /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		B400DB3C2B761CE800530566 /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Presentation;
+			sourceTree = "<group>";
+		};
+		B400DB3D2B761CF100530566 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		B400DB3E2B761D3200530566 /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				B400DAFE2B76187300530566 /* Assets.xcassets */,
+				B400DB002B76187300530566 /* LaunchScreen.storyboard */,
+				B400DB032B76187300530566 /* Info.plist */,
+			);
+			path = Resource;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -491,7 +523,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7MS89TXQ5T;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Pokemon/Info.plist;
+				INFOPLIST_FILE = Pokemon/Resource/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -519,7 +551,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7MS89TXQ5T;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Pokemon/Info.plist;
+				INFOPLIST_FILE = Pokemon/Resource/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
