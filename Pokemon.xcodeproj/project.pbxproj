@@ -16,6 +16,13 @@
 		B400DB0D2B76187400530566 /* PokemonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B400DB0C2B76187400530566 /* PokemonTests.swift */; };
 		B400DB172B76187400530566 /* PokemonUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B400DB162B76187400530566 /* PokemonUITests.swift */; };
 		B400DB192B76187400530566 /* PokemonUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B400DB182B76187400530566 /* PokemonUITestsLaunchTests.swift */; };
+		B400DB2B2B761ABE00530566 /* ReactorKit in Frameworks */ = {isa = PBXBuildFile; productRef = B400DB2A2B761ABE00530566 /* ReactorKit */; };
+		B400DB2E2B761B7400530566 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = B400DB2D2B761B7400530566 /* RxCocoa */; };
+		B400DB302B761B8400530566 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = B400DB2F2B761B8400530566 /* RxSwift */; };
+		B400DB322B761B8900530566 /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = B400DB312B761B8900530566 /* RxDataSources */; };
+		B400DB342B761B8D00530566 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = B400DB332B761B8D00530566 /* Moya */; };
+		B400DB362B761B9200530566 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = B400DB352B761B9200530566 /* SnapKit */; };
+		B400DB392B761BC000530566 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = B400DB382B761BC000530566 /* Then */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +63,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B400DB302B761B8400530566 /* RxSwift in Frameworks */,
+				B400DB322B761B8900530566 /* RxDataSources in Frameworks */,
+				B400DB2E2B761B7400530566 /* RxCocoa in Frameworks */,
+				B400DB392B761BC000530566 /* Then in Frameworks */,
+				B400DB362B761B9200530566 /* SnapKit in Frameworks */,
+				B400DB342B761B8D00530566 /* Moya in Frameworks */,
+				B400DB2B2B761ABE00530566 /* ReactorKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -83,6 +97,7 @@
 				B400DB0B2B76187400530566 /* PokemonTests */,
 				B400DB152B76187400530566 /* PokemonUITests */,
 				B400DAF32B76187200530566 /* Products */,
+				B400DB2C2B761B7400530566 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -127,6 +142,13 @@
 			path = PokemonUITests;
 			sourceTree = "<group>";
 		};
+		B400DB2C2B761B7400530566 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -143,6 +165,15 @@
 			dependencies = (
 			);
 			name = Pokemon;
+			packageProductDependencies = (
+				B400DB2A2B761ABE00530566 /* ReactorKit */,
+				B400DB2D2B761B7400530566 /* RxCocoa */,
+				B400DB2F2B761B8400530566 /* RxSwift */,
+				B400DB312B761B8900530566 /* RxDataSources */,
+				B400DB332B761B8D00530566 /* Moya */,
+				B400DB352B761B9200530566 /* SnapKit */,
+				B400DB382B761BC000530566 /* Then */,
+			);
 			productName = Pokemon;
 			productReference = B400DAF22B76187200530566 /* Pokemon.app */;
 			productType = "com.apple.product-type.application";
@@ -215,6 +246,14 @@
 				Base,
 			);
 			mainGroup = B400DAE92B76187200530566;
+			packageReferences = (
+				B400DB252B761A3E00530566 /* XCRemoteSwiftPackageReference "RxSwift" */,
+				B400DB262B761A7500530566 /* XCRemoteSwiftPackageReference "RxDataSources" */,
+				B400DB272B761A9D00530566 /* XCRemoteSwiftPackageReference "Moya" */,
+				B400DB282B761AAD00530566 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				B400DB292B761ABE00530566 /* XCRemoteSwiftPackageReference "ReactorKit" */,
+				B400DB372B761BC000530566 /* XCRemoteSwiftPackageReference "Then" */,
+			);
 			productRefGroup = B400DAF32B76187200530566 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -607,6 +646,95 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		B400DB252B761A3E00530566 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveX/RxSwift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.6.0;
+			};
+		};
+		B400DB262B761A7500530566 /* XCRemoteSwiftPackageReference "RxDataSources" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RxSwiftCommunity/RxDataSources";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.2;
+			};
+		};
+		B400DB272B761A9D00530566 /* XCRemoteSwiftPackageReference "Moya" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Moya/Moya";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 15.0.3;
+			};
+		};
+		B400DB282B761AAD00530566 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.0;
+			};
+		};
+		B400DB292B761ABE00530566 /* XCRemoteSwiftPackageReference "ReactorKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactorKit/ReactorKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.2.0;
+			};
+		};
+		B400DB372B761BC000530566 /* XCRemoteSwiftPackageReference "Then" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/devxoul/Then.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		B400DB2A2B761ABE00530566 /* ReactorKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B400DB292B761ABE00530566 /* XCRemoteSwiftPackageReference "ReactorKit" */;
+			productName = ReactorKit;
+		};
+		B400DB2D2B761B7400530566 /* RxCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B400DB252B761A3E00530566 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxCocoa;
+		};
+		B400DB2F2B761B8400530566 /* RxSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B400DB252B761A3E00530566 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxSwift;
+		};
+		B400DB312B761B8900530566 /* RxDataSources */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B400DB262B761A7500530566 /* XCRemoteSwiftPackageReference "RxDataSources" */;
+			productName = RxDataSources;
+		};
+		B400DB332B761B8D00530566 /* Moya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B400DB272B761A9D00530566 /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = Moya;
+		};
+		B400DB352B761B9200530566 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B400DB282B761AAD00530566 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+		B400DB382B761BC000530566 /* Then */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B400DB372B761BC000530566 /* XCRemoteSwiftPackageReference "Then" */;
+			productName = Then;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = B400DAEA2B76187200530566 /* Project object */;
 }
