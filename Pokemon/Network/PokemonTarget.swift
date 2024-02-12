@@ -1,6 +1,6 @@
 
 //
-//  PokemonCardService.swift
+//  PokemonTarget.swift
 //  Pokemon
 //
 //  Created by 김기현 on 2/12/24.
@@ -9,16 +9,11 @@
 import Foundation
 import Moya
 
-
-private extension String {
-    static let apiKey = Bundle.main.object(forInfoDictionaryKey: "API_KEY") as? String ?? ""
+enum PokemonTarget {
+    case fetchCards(query: String, page: Int)
 }
 
-enum PokemonAPI {
-    case fetchCards(query: String)
-}
-
-extension PokemonAPI: TargetType {
+extension PokemonTarget: TargetType {
     var baseURL: URL { return URL(string: "https://api.pokemontcg.io/v2")! }
 
     var path: String {
@@ -38,11 +33,12 @@ extension PokemonAPI: TargetType {
     var task: Task {
         switch self {
         case .fetchCards(let query):
-            return .requestParameters(parameters: ["apiKey": String.apiKey], encoding: URLEncoding.queryString)
+            return .requestParameters(parameters: ["q": query, "page": 1, "pageSize": 250], encoding: URLEncoding.queryString)
+
         }
     }
 
     var headers: [String : String]? {
-        return ["Content-Type": "application/json"]
+        return ["Content-Type": "application/json", "X-Api-Key": APIKeyManager.shared.apiKey]
     }
 }
