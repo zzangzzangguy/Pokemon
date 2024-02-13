@@ -9,7 +9,7 @@
 import Foundation
 import Moya
 
-class DefaultSearchRepository: SearchRepository {
+class SearchRepositoryImpl: SearchRepository {
     private let provider: MoyaProvider<PokemonTarget>
 
     init(provider: MoyaProvider<PokemonTarget> = MoyaProvider<PokemonTarget>()) {
