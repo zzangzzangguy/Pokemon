@@ -7,11 +7,11 @@
 
 import Foundation
 
-class APIKeyManager {
+final class APIKeyManager {
+
     static let shared = APIKeyManager()
-    private init() {}
 
     var apiKey: String {
         return ProcessInfo.processInfo.environment["API_KEY"] ?? ""
-          }
-      }
+    }
+}

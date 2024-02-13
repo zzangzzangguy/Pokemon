@@ -127,7 +127,6 @@
 			isa = PBXGroup;
 			children = (
 				4EA179F72B7A1342006A1D51 /* PokemonTarget.swift */,
-				4EA179FE2B7A849E006A1D51 /* APIKeyManager.swift */,
 				4EA17A002B7B3584006A1D51 /* FetchCardRequest.swift */,
 			);
 			path = Network;
@@ -169,6 +168,7 @@
 				B400DB3B2B761CDF00530566 /* Domain */,
 				B400DB3C2B761CE800530566 /* Presentation */,
 				4EA179EC2B7A1144006A1D51 /* Data */,
+				B4152EB12B7B55C600E0A5E2 /* Environment */,
 				B400DB3E2B761D3200530566 /* Resource */,
 			);
 			path = Pokemon;
@@ -249,6 +249,14 @@
 				4EA179FA2B7A1372006A1D51 /* SearchRepositoryProtocol.swift */,
 			);
 			path = Interface;
+			sourceTree = "<group>";
+		};
+		B4152EB12B7B55C600E0A5E2 /* Environment */ = {
+			isa = PBXGroup;
+			children = (
+				4EA179FE2B7A849E006A1D51 /* APIKeyManager.swift */,
+			);
+			path = Environment;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
