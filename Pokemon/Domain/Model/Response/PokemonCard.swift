@@ -1,5 +1,5 @@
 //
-//  PokemonCardEntities.swift
+//  PokemonCard.swift
 //  Pokemon
 //
 //  Created by 김기현 on 2/12/24.
