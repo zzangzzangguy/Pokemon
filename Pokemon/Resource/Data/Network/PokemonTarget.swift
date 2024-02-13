@@ -9,12 +9,16 @@
 import Foundation
 import Moya
 
+typealias DictionaryType = [String: Any]
+
 enum PokemonTarget {
-    case fetchCards(query: String, page: Int)
+    case fetchCards(parameters: DictionaryType)
 }
 
 extension PokemonTarget: TargetType {
-    var baseURL: URL { return URL(string: "https://api.pokemontcg.io/v2")! }
+    var baseURL: URL {
+        return URL(string: "https://api.pokemontcg.io/v2")!
+    }
 
     var path: String {
         switch self {
@@ -32,13 +36,18 @@ extension PokemonTarget: TargetType {
 
     var task: Task {
         switch self {
-        case .fetchCards(let query):
-            return .requestParameters(parameters: ["q": query, "page": 1, "pageSize": 250], encoding: URLEncoding.queryString)
-
+        case .fetchCards(let parameters):
+            return .requestParameters(
+                parameters: parameters,
+                encoding: URLEncoding.default
+            )
         }
     }
 
     var headers: [String : String]? {
-        return ["Content-Type": "application/json", "X-Api-Key": APIKeyManager.shared.apiKey]
+        return [
+            "Content-Type": "application/json",
+            "X-Api-Key": APIKeyManager.shared.apiKey
+        ]
     }
 }
