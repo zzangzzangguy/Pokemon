@@ -14,6 +14,7 @@
 		4EA179FB2B7A1372006A1D51 /* SearchRepositoryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA179FA2B7A1372006A1D51 /* SearchRepositoryProtocol.swift */; };
 		4EA179FD2B7A1573006A1D51 /* SearchRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA179FC2B7A1573006A1D51 /* SearchRepository.swift */; };
 		4EA179FF2B7A849F006A1D51 /* APIKeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA179FE2B7A849E006A1D51 /* APIKeyManager.swift */; };
+		4EA17A012B7B3584006A1D51 /* FetchCardRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA17A002B7B3584006A1D51 /* FetchCardRequest.swift */; };
 		B400DAF62B76187200530566 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B400DAF52B76187200530566 /* AppDelegate.swift */; };
 		B400DAF82B76187200530566 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B400DAF72B76187200530566 /* SceneDelegate.swift */; };
 		B400DAFA2B76187200530566 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B400DAF92B76187200530566 /* ViewController.swift */; };
@@ -56,6 +57,7 @@
 		4EA179FA2B7A1372006A1D51 /* SearchRepositoryProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchRepositoryProtocol.swift; sourceTree = "<group>"; };
 		4EA179FC2B7A1573006A1D51 /* SearchRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchRepository.swift; sourceTree = "<group>"; };
 		4EA179FE2B7A849E006A1D51 /* APIKeyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIKeyManager.swift; sourceTree = "<group>"; };
+		4EA17A002B7B3584006A1D51 /* FetchCardRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchCardRequest.swift; sourceTree = "<group>"; };
 		B400DAF22B76187200530566 /* Pokemon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pokemon.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B400DAF52B76187200530566 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B400DAF72B76187200530566 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -105,7 +107,6 @@
 		4EA179EC2B7A1144006A1D51 /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				4EA179F12B7A12A9006A1D51 /* Models */,
 			);
 			name = Data;
 			path = Resource/Data;
@@ -114,6 +115,7 @@
 		4EA179F12B7A12A9006A1D51 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				4EA179F92B7A1359006A1D51 /* Repository */,
 				4EA179F22B7A12B7006A1D51 /* PokemonCardDataModel.swift */,
 				4EA179F42B7A12DB006A1D51 /* CardEntities.swift */,
 			);
@@ -125,6 +127,7 @@
 			children = (
 				4EA179F72B7A1342006A1D51 /* PokemonTarget.swift */,
 				4EA179FE2B7A849E006A1D51 /* APIKeyManager.swift */,
+				4EA17A002B7B3584006A1D51 /* FetchCardRequest.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -142,7 +145,6 @@
 			isa = PBXGroup;
 			children = (
 				B400DAF42B76187200530566 /* Pokemon */,
-				4EA179F92B7A1359006A1D51 /* Repository */,
 				B400DB0B2B76187400530566 /* PokemonTests */,
 				B400DB152B76187400530566 /* PokemonUITests */,
 				B400DAF32B76187200530566 /* Products */,
@@ -209,7 +211,7 @@
 		B400DB3B2B761CDF00530566 /* Domain */ = {
 			isa = PBXGroup;
 			children = (
-				B400DB412B761FA600530566 /* Model */,
+				4EA179F12B7A12A9006A1D51 /* Models */,
 				B400DB422B761FAA00530566 /* UseCase */,
 				B400DB432B761FB700530566 /* Interface */,
 			);
@@ -233,13 +235,6 @@
 				B400DB032B76187300530566 /* Info.plist */,
 			);
 			path = Resource;
-			sourceTree = "<group>";
-		};
-		B400DB412B761FA600530566 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Model;
 			sourceTree = "<group>";
 		};
 		B400DB422B761FAA00530566 /* UseCase */ = {
@@ -408,6 +403,7 @@
 				B400DAFA2B76187200530566 /* ViewController.swift in Sources */,
 				B400DAF62B76187200530566 /* AppDelegate.swift in Sources */,
 				4EA179F82B7A1342006A1D51 /* PokemonTarget.swift in Sources */,
+				4EA17A012B7B3584006A1D51 /* FetchCardRequest.swift in Sources */,
 				4EA179F52B7A12DB006A1D51 /* CardEntities.swift in Sources */,
 				4EA179FB2B7A1372006A1D51 /* SearchRepositoryProtocol.swift in Sources */,
 				B400DAF82B76187200530566 /* SceneDelegate.swift in Sources */,

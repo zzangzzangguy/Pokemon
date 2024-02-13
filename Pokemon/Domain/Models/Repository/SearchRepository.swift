@@ -10,14 +10,14 @@ import Foundation
 import Moya
 
 class DefaultSearchRepository: SearchRepository {
-    private let provider: MoyaProvider<PokemonAPI>
+    private let provider: MoyaProvider<PokemonTarget>
 
-    init(provider: MoyaProvider<PokemonAPI> = MoyaProvider<PokemonAPI>()) {
+    init(provider: MoyaProvider<PokemonTarget> = MoyaProvider<PokemonTarget>()) {
         self.provider = provider
     }
 
-    func searchCards(with query: String, completion: @escaping (Result<[PokemonCard], Error>) -> Void) {
-        provider.request(.fetchCards(query: query)) { result in
+    func searchCards(with query: String, page: Int, completion: @escaping (Result<[PokemonCard], Error>) -> Void) {
+        provider.request(.fetchCards(query: query, page: page)) { result in
             switch result {
             case .success(let response):
                 do {

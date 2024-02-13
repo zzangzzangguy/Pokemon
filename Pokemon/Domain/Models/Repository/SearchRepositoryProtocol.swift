@@ -8,5 +8,5 @@
 import Foundation
 
 protocol SearchRepository {
-    func searchCards(with query: String, completion: @escaping (Result<[PokemonCard], Error>) -> Void)
+    func searchCards(with query: String, page: Int, completion: @escaping (Result<[PokemonCard], Error>) -> Void)
 }
