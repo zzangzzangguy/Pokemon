@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		4EA179F02B7A11BA006A1D51 /* Secrets.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 4EA179EF2B7A11BA006A1D51 /* Secrets.xcconfig */; };
-		4EA179F32B7A12B7006A1D51 /* PokemonCardDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA179F22B7A12B7006A1D51 /* PokemonCardDataModel.swift */; };
 		4EA179F52B7A12DB006A1D51 /* PokemonCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA179F42B7A12DB006A1D51 /* PokemonCard.swift */; };
 		4EA179F82B7A1342006A1D51 /* PokemonTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA179F72B7A1342006A1D51 /* PokemonTarget.swift */; };
 		4EA179FB2B7A1372006A1D51 /* PokemonRepositoryType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA179FA2B7A1372006A1D51 /* PokemonRepositoryType.swift */; };
@@ -51,7 +50,6 @@
 
 /* Begin PBXFileReference section */
 		4EA179EF2B7A11BA006A1D51 /* Secrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig; sourceTree = "<group>"; };
-		4EA179F22B7A12B7006A1D51 /* PokemonCardDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonCardDataModel.swift; sourceTree = "<group>"; };
 		4EA179F42B7A12DB006A1D51 /* PokemonCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonCard.swift; sourceTree = "<group>"; };
 		4EA179F72B7A1342006A1D51 /* PokemonTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonTarget.swift; sourceTree = "<group>"; };
 		4EA179FA2B7A1372006A1D51 /* PokemonRepositoryType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonRepositoryType.swift; sourceTree = "<group>"; };
@@ -210,7 +208,6 @@
 			isa = PBXGroup;
 			children = (
 				4EA179F12B7A12A9006A1D51 /* Model */,
-				B400DB422B761FAA00530566 /* UseCase */,
 				B400DB432B761FB700530566 /* Interface */,
 			);
 			path = Domain;
@@ -235,13 +232,6 @@
 			path = Resource;
 			sourceTree = "<group>";
 		};
-		B400DB422B761FAA00530566 /* UseCase */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = UseCase;
-			sourceTree = "<group>";
-		};
 		B400DB432B761FB700530566 /* Interface */ = {
 			isa = PBXGroup;
 			children = (
@@ -262,7 +252,6 @@
 			isa = PBXGroup;
 			children = (
 				4EA179F42B7A12DB006A1D51 /* PokemonCard.swift */,
-				4EA179F22B7A12B7006A1D51 /* PokemonCardDataModel.swift */,
 			);
 			path = Response;
 			sourceTree = "<group>";
@@ -431,7 +420,6 @@
 				4EA179F52B7A12DB006A1D51 /* PokemonCard.swift in Sources */,
 				4EA179FB2B7A1372006A1D51 /* PokemonRepositoryType.swift in Sources */,
 				B400DAF82B76187200530566 /* SceneDelegate.swift in Sources */,
-				4EA179F32B7A12B7006A1D51 /* PokemonCardDataModel.swift in Sources */,
 				4EA179FD2B7A1573006A1D51 /* PokemonRepository.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
