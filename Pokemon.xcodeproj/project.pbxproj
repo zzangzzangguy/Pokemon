@@ -29,6 +29,7 @@
 		B400DB342B761B8D00530566 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = B400DB332B761B8D00530566 /* Moya */; };
 		B400DB362B761B9200530566 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = B400DB352B761B9200530566 /* SnapKit */; };
 		B400DB392B761BC000530566 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = B400DB382B761BC000530566 /* Then */; };
+		B4FA7D352B7E470D0058AA93 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4FA7D342B7E470D0058AA93 /* BaseViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,6 +69,7 @@
 		B400DB122B76187400530566 /* PokemonUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PokemonUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B400DB162B76187400530566 /* PokemonUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonUITests.swift; sourceTree = "<group>"; };
 		B400DB182B76187400530566 /* PokemonUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		B4FA7D342B7E470D0058AA93 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -216,6 +218,7 @@
 		B400DB3C2B761CE800530566 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				B4FA7D332B7E47020058AA93 /* Common */,
 				B400DAF92B76187200530566 /* ViewController.swift */,
 			);
 			path = Presentation;
@@ -262,6 +265,14 @@
 				4EA17A002B7B3584006A1D51 /* CardsRequest.swift */,
 			);
 			path = Request;
+			sourceTree = "<group>";
+		};
+		B4FA7D332B7E47020058AA93 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				B4FA7D342B7E470D0058AA93 /* BaseViewController.swift */,
+			);
+			path = Common;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -417,6 +428,7 @@
 				B400DAF62B76187200530566 /* AppDelegate.swift in Sources */,
 				4EA179F82B7A1342006A1D51 /* PokemonTarget.swift in Sources */,
 				4EA17A012B7B3584006A1D51 /* CardsRequest.swift in Sources */,
+				B4FA7D352B7E470D0058AA93 /* BaseViewController.swift in Sources */,
 				4EA179F52B7A12DB006A1D51 /* PokemonCard.swift in Sources */,
 				4EA179FB2B7A1372006A1D51 /* PokemonRepositoryType.swift in Sources */,
 				B400DAF82B76187200530566 /* SceneDelegate.swift in Sources */,
