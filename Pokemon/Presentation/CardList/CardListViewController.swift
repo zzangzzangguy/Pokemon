@@ -1,5 +1,5 @@
 //
-//  ListViewController.swift
+//  CardListViewController.swift
 //  Pokemon
 //
 //  Created by 강호성 on 2/15/24.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class ListViewController: BaseViewController {
+final class CardListViewController: BaseViewController {
 
     // MARK: - Properties
 

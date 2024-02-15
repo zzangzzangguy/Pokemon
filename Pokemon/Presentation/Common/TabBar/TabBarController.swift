@@ -19,10 +19,10 @@ final class TabBarController: UITabBarController {
     // MARK: - Helpers
 
     private func configureViewController() {
-        let list = templateTabBarController(
+        let cardList = templateTabBarController(
             unselectedImage: UIImage(systemName: "greetingcard")!,
             selectedImage: UIImage(systemName: "greetingcard.fill")!,
-            rootViewController: ListViewController()
+            rootViewController: CardListViewController()
         )
 
         let search = templateTabBarController(
@@ -31,7 +31,7 @@ final class TabBarController: UITabBarController {
             rootViewController: SearchViewController()
         )
 
-        viewControllers = [list, search]
+        viewControllers = [cardList, search]
     }
 
     private func templateTabBarController(
