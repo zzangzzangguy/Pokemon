@@ -226,6 +226,7 @@
 			isa = PBXGroup;
 			children = (
 				B4FA7D332B7E47020058AA93 /* Common */,
+				B4401ABA2B82477C0064166C /* View */,
 				B4FA7D392B7E47570058AA93 /* CardList */,
 				B4FA7D362B7E47440058AA93 /* Search */,
 			);
@@ -273,6 +274,37 @@
 				4EA17A002B7B3584006A1D51 /* CardsRequest.swift */,
 			);
 			path = Request;
+			sourceTree = "<group>";
+		};
+		B4401ABA2B82477C0064166C /* View */ = {
+			isa = PBXGroup;
+			children = (
+				B4401ABB2B8247860064166C /* Cell */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		B4401ABB2B8247860064166C /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				B4401ABC2B8247900064166C /* TableView */,
+				B4401ABD2B8247950064166C /* CollectionView */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		B4401ABC2B8247900064166C /* TableView */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = TableView;
+			sourceTree = "<group>";
+		};
+		B4401ABD2B8247950064166C /* CollectionView */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = CollectionView;
 			sourceTree = "<group>";
 		};
 		B4FA7D332B7E47020058AA93 /* Common */ = {
