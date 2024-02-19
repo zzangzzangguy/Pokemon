@@ -32,6 +32,7 @@
 		B4401AC12B8247DA0064166C /* BaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4401AC02B8247DA0064166C /* BaseCollectionViewCell.swift */; };
 		B4401AC42B8248200064166C /* ReusableView+Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4401AC32B8248200064166C /* ReusableView+Ex.swift */; };
 		B4401AC62B82486B0064166C /* BaseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4401AC52B82486B0064166C /* BaseTableViewCell.swift */; };
+		B4401ACA2B8350270064166C /* CardListSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4401AC92B8350270064166C /* CardListSection.swift */; };
 		B4FA7D352B7E470D0058AA93 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4FA7D342B7E470D0058AA93 /* BaseViewController.swift */; };
 		B4FA7D382B7E47550058AA93 /* CardListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4FA7D372B7E47550058AA93 /* CardListViewController.swift */; };
 		B4FA7D3B2B7E47640058AA93 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4FA7D3A2B7E47640058AA93 /* SearchViewController.swift */; };
@@ -79,6 +80,7 @@
 		B4401AC02B8247DA0064166C /* BaseCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCollectionViewCell.swift; sourceTree = "<group>"; };
 		B4401AC32B8248200064166C /* ReusableView+Ex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReusableView+Ex.swift"; sourceTree = "<group>"; };
 		B4401AC52B82486B0064166C /* BaseTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTableViewCell.swift; sourceTree = "<group>"; };
+		B4401AC92B8350270064166C /* CardListSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardListSection.swift; sourceTree = "<group>"; };
 		B4FA7D342B7E470D0058AA93 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		B4FA7D372B7E47550058AA93 /* CardListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardListViewController.swift; sourceTree = "<group>"; };
 		B4FA7D3A2B7E47640058AA93 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
@@ -324,10 +326,27 @@
 			path = Extension;
 			sourceTree = "<group>";
 		};
+		B4401AC72B8350030064166C /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				B4401AC82B83501F0064166C /* Section */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		B4401AC82B83501F0064166C /* Section */ = {
+			isa = PBXGroup;
+			children = (
+				B4401AC92B8350270064166C /* CardListSection.swift */,
+			);
+			path = Section;
+			sourceTree = "<group>";
+		};
 		B4FA7D332B7E47020058AA93 /* Common */ = {
 			isa = PBXGroup;
 			children = (
 				B4FA7D3E2B7E48970058AA93 /* TabBar */,
+				B4401AC72B8350030064166C /* Components */,
 				B4FA7D3F2B7E489B0058AA93 /* Base */,
 				B4401AC22B82480B0064166C /* Extension */,
 			);
@@ -517,6 +536,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4EA179FF2B7A849F006A1D51 /* APIKeyManager.swift in Sources */,
+				B4401ACA2B8350270064166C /* CardListSection.swift in Sources */,
 				B4FA7D3D2B7E48460058AA93 /* TabBarController.swift in Sources */,
 				B400DAF62B76187200530566 /* AppDelegate.swift in Sources */,
 				4EA179F82B7A1342006A1D51 /* PokemonTarget.swift in Sources */,

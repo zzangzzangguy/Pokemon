@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RxDataSources
 
 final class CardListViewController: BaseViewController {
 
@@ -17,7 +18,27 @@ final class CardListViewController: BaseViewController {
     ).then {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.backgroundColor = .white
+        $0.contentInset = .init(top: 16, left: 16, bottom: 40, right: 16)
+        $0.delegate = self
+        $0.register(
+            CardListCollectionViewCell.self,
+            forCellWithReuseIdentifier: CardListCollectionViewCell.reuseIdentifier
+        )
     }
+
+    private lazy var dataSource = RxCollectionViewSectionedReloadDataSource<CardListSection.CardListSectionModel>(
+        configureCell: { [weak self] dataSource, collectionView, indexPath, item in
+            guard let self = self else { return UICollectionViewCell() }
+            switch item {
+            case .firstItem(let value):
+                let cell = collectionView.dequeueReusableCell(
+                    withReuseIdentifier: CardListCollectionViewCell.reuseIdentifier,
+                    for: indexPath
+                ) as! CardListCollectionViewCell
+                return cell
+            }
+        }
+    )
 
     // MARK: - Lifecycle
 
@@ -42,5 +63,21 @@ final class CardListViewController: BaseViewController {
     override func setConfiguration() {
         super.setConfiguration()
         title = "카드 리스트"
+    }
+}
+
+// MARK: - UICollectionViewDelegateFlowLayout
+extension CardListViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        sizeForItemAt indexPath: IndexPath
+    ) -> CGSize {
+        
+        let width = collectionView.bounds.width - 32
+        let itemWidth = (width - 16) / 2
+        let itemHeight: CGFloat = 200
+
+        return CGSize(width: itemWidth, height: itemHeight)
     }
 }

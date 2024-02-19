@@ -14,3 +14,9 @@ struct PokemonCard: Codable {
     let imageUrlSmall: URL
     let imageUrlLarge: URL
 }
+
+extension PokemonCard: Equatable {
+    static func == (lhs: PokemonCard, rhs: PokemonCard) -> Bool {
+        return lhs.id == rhs.id
+    }
+}
