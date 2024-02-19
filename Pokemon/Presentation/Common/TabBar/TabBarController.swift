@@ -22,7 +22,11 @@ final class TabBarController: UITabBarController {
         let cardList = templateTabBarController(
             unselectedImage: UIImage(systemName: "greetingcard")!,
             selectedImage: UIImage(systemName: "greetingcard.fill")!,
-            rootViewController: CardListViewController()
+            rootViewController: CardListViewController(
+                reactor: CardListReactor(
+                    pokemonRepository: PokemonRepository()
+                )
+            )
         )
 
         let search = templateTabBarController(

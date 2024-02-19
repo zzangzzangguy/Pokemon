@@ -7,8 +7,9 @@
 
 import UIKit
 import RxDataSources
+import ReactorKit
 
-final class CardListViewController: BaseViewController {
+final class CardListViewController: BaseViewController, ReactorKit.View {
 
     // MARK: - Properties
 
@@ -40,6 +41,13 @@ final class CardListViewController: BaseViewController {
         }
     )
 
+    // MARK: - Init
+
+    required init(reactor: CardListReactor) {
+        defer { self.reactor = reactor }
+        super.init()
+    }
+
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
@@ -63,6 +71,10 @@ final class CardListViewController: BaseViewController {
     override func setConfiguration() {
         super.setConfiguration()
         title = "카드 리스트"
+    }
+
+    func bind(reactor: CardListReactor) {
+
     }
 }
 
