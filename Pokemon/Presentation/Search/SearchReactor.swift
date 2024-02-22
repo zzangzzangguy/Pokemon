@@ -34,9 +34,14 @@ class SearchReactor: Reactor {
     func mutate(action: Action) -> Observable<Mutation> {
         switch action {
         case .updateSearchQuery(let query):
-            return Observable.just(Mutation.setQuery(query))
+            print("Query: \(query)")
+            return .just(.setQuery(query))
+
         case .search:
-            return searchQuery().map(Mutation.setSearchResults)
+            print("Trigger")
+            return searchQuery()
+                .map { .setSearchResults($0) }
+                .catch { error in .just(.setSearchResults(.failure(error))) }
         }
     }
 
@@ -52,11 +57,16 @@ class SearchReactor: Reactor {
     }
 
     private func searchQuery() -> Observable<Result<[PokemonCard], Error>> {
-        return Observable.create { [weak self] observer in
-            guard let self = self else { return Disposables.create() }
+        guard !currentState.query.isEmpty else {
+            return .just(.success([]))
+        }
+        let parameters = ["q": currentState.query]
+        print("검색 시작: \(currentState.query)")
 
-            let request = CardsRequest(query: self.currentState.query)
+        let request = CardsRequest(query: currentState.query)
+        return Observable.create { observer in
             self.pokemonRepository.fetchCards(request: request) { result in
+                print("API 결과: \(result)")
                 observer.onNext(result)
                 observer.onCompleted()
             }
