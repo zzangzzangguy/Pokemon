@@ -10,5 +10,4 @@ import RxSwift
 import RxCocoa
 
 class SearchBar: UISearchBar {
-    private let disposeBag = DisposeBag()
 }
