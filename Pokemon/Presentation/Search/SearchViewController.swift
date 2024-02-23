@@ -43,6 +43,7 @@ final class SearchViewController: BaseViewController, UISearchBarDelegate {
         guard let tableView = tableView else { return }
 
         searchBar.rx.text.orEmpty
+            .debounce(.milliseconds(500), scheduler: MainScheduler.instance)
             .distinctUntilChanged()
             .map { SearchReactor.Action.updateSearchQuery($0) }
             .bind(to: reactor.action)
