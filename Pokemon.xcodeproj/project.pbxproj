@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4E48952F2B84AA1800503703 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E48952E2B84AA1800503703 /* SearchBar.swift */; };
 		4E4895312B85F41100503703 /* SearchReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E4895302B85F41100503703 /* SearchReactor.swift */; };
+		4E4895342B89F01000503703 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 4E4895332B89F01000503703 /* Kingfisher */; };
 		4EA179F02B7A11BA006A1D51 /* Secrets.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 4EA179EF2B7A11BA006A1D51 /* Secrets.xcconfig */; };
 		4EA179F52B7A12DB006A1D51 /* PokemonCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA179F42B7A12DB006A1D51 /* PokemonCard.swift */; };
 		4EA179F82B7A1342006A1D51 /* PokemonTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA179F72B7A1342006A1D51 /* PokemonTarget.swift */; };
@@ -63,7 +63,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		4E48952E2B84AA1800503703 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		4E4895302B85F41100503703 /* SearchReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchReactor.swift; sourceTree = "<group>"; };
 		4EA179EF2B7A11BA006A1D51 /* Secrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig; sourceTree = "<group>"; };
 		4EA179F42B7A12DB006A1D51 /* PokemonCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonCard.swift; sourceTree = "<group>"; };
@@ -368,7 +367,6 @@
 			isa = PBXGroup;
 			children = (
 				B4FA7D3A2B7E47640058AA93 /* SearchViewController.swift */,
-				4E48952E2B84AA1800503703 /* SearchBar.swift */,
 				4E4895302B85F41100503703 /* SearchReactor.swift */,
 			);
 			path = Search;
@@ -564,7 +562,6 @@
 				B4401ACE2B8361B40064166C /* UIViewController+Rx.swift in Sources */,
 				B4FA7D3B2B7E47640058AA93 /* SearchViewController.swift in Sources */,
 				4E4895312B85F41100503703 /* SearchReactor.swift in Sources */,
-				4E48952F2B84AA1800503703 /* SearchBar.swift in Sources */,
 				B4FA7D352B7E470D0058AA93 /* BaseViewController.swift in Sources */,
 				B4401ABF2B8247C60064166C /* CardListCollectionViewCell.swift in Sources */,
 				4EA179F52B7A12DB006A1D51 /* PokemonCard.swift in Sources */,
@@ -915,6 +912,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		4E4895322B89F01000503703 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.11.0;
+			};
+		};
 		B400DB252B761A3E00530566 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ReactiveX/RxSwift";
@@ -974,6 +979,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		4E4895332B89F01000503703 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4E4895322B89F01000503703 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
 		B400DB2A2B761ABE00530566 /* ReactorKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = B400DB292B761ABE00530566 /* XCRemoteSwiftPackageReference "ReactorKit" */;

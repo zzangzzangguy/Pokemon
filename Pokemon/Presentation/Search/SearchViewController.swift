@@ -6,10 +6,11 @@
 //
 
 import UIKit
+import SnapKit
+
 import RxSwift
 import RxCocoa
 import RxDataSources
-import SnapKit
 import ReactorKit
 
 final class SearchViewController: BaseViewController, UISearchBarDelegate {

@@ -60,13 +60,13 @@ class SearchReactor: Reactor {
         guard !currentState.query.isEmpty else {
             return .just(.success([]))
         }
-        let parameters = ["q": currentState.query]
-        print("검색 시작: \(currentState.query)")
+//        let parameters = ["q": currentState.query]
+//        print("검색 시작: \(currentState.query)")
 
         let request = CardsRequest(query: currentState.query)
         return Observable.create { observer in
             self.pokemonRepository.fetchCards(request: request) { result in
-                print("API 결과: \(result)")
+//                print("API 결과: \(result)")
                 observer.onNext(result)
                 observer.onCompleted()
             }
