@@ -9,7 +9,7 @@ import ReactorKit
 import RxSwift
 
 class SearchReactor: Reactor {
-    let initialState = State()
+    var initialState = State()
     private let pokemonRepository: PokemonRepositoryType
 
     init(pokemonRepository: PokemonRepositoryType) {
@@ -19,29 +19,49 @@ class SearchReactor: Reactor {
     enum Action {
         case updateSearchQuery(String)
         case search
+        case loadMore
     }
 
     enum Mutation {
         case setQuery(String)
         case setSearchResults(Result<[PokemonCard], Error>)
+        case appendSearchResults(Result<[PokemonCard], Error>)
+        case setPage(Int)
+        case setCanLoadMore(Bool)
     }
 
     struct State {
         var query: String = ""
         var searchResult: Result<[PokemonCard], Error>?
+        var page: Int = 1
+        var canLoadMore: Bool = true
     }
+
 
     func mutate(action: Action) -> Observable<Mutation> {
         switch action {
         case .updateSearchQuery(let query):
             print("Query: \(query)")
-            return .just(.setQuery(query))
+            return Observable.concat([
+                .just(.setQuery(query)),
+                .just(.setSearchResults(.success([])))
+            ])
 
         case .search:
-            print("Trigger")
-            return searchQuery()
-                .map { .setSearchResults($0) }
-                .catch { error in .just(.setSearchResults(.failure(error))) }
+            return Observable.concat([
+                .just(.setPage(1)),
+                .just(.setCanLoadMore(true)),
+                searchQuery(page: 1)
+                    .map(Mutation.setSearchResults)
+            ])
+        case .loadMore:
+            guard currentState.canLoadMore else {
+                return .empty()
+            }
+            let nextPage = currentState.page + 1
+            return searchQuery(page: nextPage)
+                .map(Mutation.appendSearchResults)
+                .startWith(.setPage(nextPage))
         }
     }
 
@@ -50,23 +70,32 @@ class SearchReactor: Reactor {
         switch mutation {
         case .setQuery(let query):
             newState.query = query
+            newState.searchResult = nil
         case .setSearchResults(let result):
             newState.searchResult = result
+        case .appendSearchResults(let result):
+            if case let .success(newCards) = result, case .success(var currentCards) = newState.searchResult {
+                currentCards += newCards
+                newState.searchResult = .success(currentCards)
+            } else if case .failure = result {
+                newState.canLoadMore = false
+            }
+        case .setPage(let page):
+            newState.page = page
+        case .setCanLoadMore(let canLoadMore):
+            newState.canLoadMore = canLoadMore
         }
         return newState
     }
 
-    private func searchQuery() -> Observable<Result<[PokemonCard], Error>> {
+    private func searchQuery(page: Int) -> Observable<Result<[PokemonCard], Error>> {
         guard !currentState.query.isEmpty else {
             return .just(.success([]))
         }
-//        let parameters = ["q": currentState.query]
-//        print("검색 시작: \(currentState.query)")
 
-        let request = CardsRequest(query: currentState.query)
+        let request = CardsRequest(query: currentState.query, page: page, pageSize: 20) 
         return Observable.create { observer in
             self.pokemonRepository.fetchCards(request: request) { result in
-//                print("API 결과: \(result)")
                 observer.onNext(result)
                 observer.onCompleted()
             }
