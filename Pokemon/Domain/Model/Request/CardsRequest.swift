@@ -25,7 +25,7 @@ struct CardsRequest {
     var toDictionary: [String: Any] {
         var dictionary: [String: Any] = [:]
         if let query = query {
-            dictionary["query"] = query
+            dictionary["q"] = "name:\(query)"
         }
         if let page = page {
             dictionary["page"] = page
