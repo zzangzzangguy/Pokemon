@@ -35,7 +35,10 @@ final class SearchViewController: BaseViewController, UISearchBarDelegate {
            let reactor = SearchReactor(pokemonRepository: repository)
            self.reactor = reactor
 
+
            bind(reactor: reactor)
+
+        tableView?.delegate = self
        }
 
     func bind(reactor: SearchReactor) {
@@ -77,6 +80,7 @@ final class SearchViewController: BaseViewController, UISearchBarDelegate {
             .disposed(by: disposeBag)
     }
 
+
     // MARK: - Helpers
 
     override func setView() {
@@ -88,27 +92,32 @@ final class SearchViewController: BaseViewController, UISearchBarDelegate {
         searchBar?.delegate = self
 
         tableView = UITableView()
-        tableView?.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+        tableView?.register(PokemonCardTableViewCell.self, forCellReuseIdentifier: "Cell")
         if let tableView = tableView {
             view.addSubview(tableView)
         }
+
     }
 
     override func setConstraints() {
         super.setConstraints()
 
+        tableView?.separatorInset.left = 0
+
+
         if let tableView = tableView {
               tableView.snp.makeConstraints {
                   $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
                   $0.left.right.bottom.equalToSuperview()
+
               }
           }
       }
     private func dataSource() -> RxTableViewSectionedReloadDataSource<SectionModel<String, PokemonCard>> {
         return RxTableViewSectionedReloadDataSource<SectionModel<String, PokemonCard>>(
             configureCell: { _, tableView, indexPath, item in
-                let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-                cell.textLabel?.text = item.name
+                let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! PokemonCardTableViewCell
+                cell.configure(with: item) 
                 return cell
             }
         )
@@ -116,5 +125,11 @@ final class SearchViewController: BaseViewController, UISearchBarDelegate {
 
     override func setConfiguration() {
         super.setConfiguration()
+    }
+}
+extension SearchViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 180
+
     }
 }
