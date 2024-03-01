@@ -27,20 +27,6 @@ final class CardListViewController: BaseViewController, ReactorKit.View {
         )
     }
 
-    private lazy var dataSource = RxCollectionViewSectionedReloadDataSource<CardListSection.CardListSectionModel>(
-        configureCell: { [weak self] dataSource, collectionView, indexPath, item in
-            guard let self = self else { return UICollectionViewCell() }
-            switch item {
-            case .firstItem(let value):
-                let cell = collectionView.dequeueReusableCell(
-                    withReuseIdentifier: CardListCollectionViewCell.reuseIdentifier,
-                    for: indexPath
-                ) as! CardListCollectionViewCell
-                return cell
-            }
-        }
-    )
-
     // MARK: - Init
 
     required init(reactor: CardListReactor) {
@@ -74,7 +60,25 @@ final class CardListViewController: BaseViewController, ReactorKit.View {
     }
 
     func bind(reactor: CardListReactor) {
+        self.rx.viewDidLoad
+          .map { Reactor.Action.viewDidLoad }
+          .bind(to: reactor.action)
+          .disposed(by: disposeBag)
 
+        let dataSource = RxCollectionViewSectionedReloadDataSource<CardListSection.CardListSectionModel>(
+            configureCell: { [weak self] dataSource, collectionView, indexPath, item in
+                guard let self = self else { return UICollectionViewCell() }
+                switch item {
+                case .firstItem(let value):
+                    let cell = collectionView.dequeueReusableCell(
+                        withReuseIdentifier: CardListCollectionViewCell.reuseIdentifier,
+                        for: indexPath
+                    ) as! CardListCollectionViewCell
+                    print(value)
+                    return cell
+                }
+            }
+        )
     }
 }
 

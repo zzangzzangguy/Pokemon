@@ -34,6 +34,7 @@
 		B4401AC62B82486B0064166C /* BaseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4401AC52B82486B0064166C /* BaseTableViewCell.swift */; };
 		B4401ACA2B8350270064166C /* CardListSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4401AC92B8350270064166C /* CardListSection.swift */; };
 		B4401ACC2B8350A20064166C /* CardListReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4401ACB2B8350A20064166C /* CardListReactor.swift */; };
+		B4401ACE2B8361B40064166C /* UIViewController+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4401ACD2B8361B40064166C /* UIViewController+Rx.swift */; };
 		B4FA7D352B7E470D0058AA93 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4FA7D342B7E470D0058AA93 /* BaseViewController.swift */; };
 		B4FA7D382B7E47550058AA93 /* CardListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4FA7D372B7E47550058AA93 /* CardListViewController.swift */; };
 		B4FA7D3B2B7E47640058AA93 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4FA7D3A2B7E47640058AA93 /* SearchViewController.swift */; };
@@ -83,6 +84,7 @@
 		B4401AC52B82486B0064166C /* BaseTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTableViewCell.swift; sourceTree = "<group>"; };
 		B4401AC92B8350270064166C /* CardListSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardListSection.swift; sourceTree = "<group>"; };
 		B4401ACB2B8350A20064166C /* CardListReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardListReactor.swift; sourceTree = "<group>"; };
+		B4401ACD2B8361B40064166C /* UIViewController+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Rx.swift"; sourceTree = "<group>"; };
 		B4FA7D342B7E470D0058AA93 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		B4FA7D372B7E47550058AA93 /* CardListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardListViewController.swift; sourceTree = "<group>"; };
 		B4FA7D3A2B7E47640058AA93 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
@@ -324,6 +326,7 @@
 			isa = PBXGroup;
 			children = (
 				B4401AC32B8248200064166C /* ReusableView+Ex.swift */,
+				B4401ACD2B8361B40064166C /* UIViewController+Rx.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -548,6 +551,7 @@
 				B4401ACC2B8350A20064166C /* CardListReactor.swift in Sources */,
 				B4401AC42B8248200064166C /* ReusableView+Ex.swift in Sources */,
 				B4FA7D382B7E47550058AA93 /* CardListViewController.swift in Sources */,
+				B4401ACE2B8361B40064166C /* UIViewController+Rx.swift in Sources */,
 				B4FA7D3B2B7E47640058AA93 /* SearchViewController.swift in Sources */,
 				B4FA7D352B7E470D0058AA93 /* BaseViewController.swift in Sources */,
 				B4401ABF2B8247C60064166C /* CardListCollectionViewCell.swift in Sources */,
