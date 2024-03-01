@@ -13,14 +13,13 @@ final class CardListViewController: BaseViewController, ReactorKit.View {
 
     // MARK: - Properties
 
-    private lazy var collectionView = UICollectionView(
+    private let collectionView = UICollectionView(
         frame: .zero,
         collectionViewLayout: UICollectionViewFlowLayout()
     ).then {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.backgroundColor = .white
         $0.contentInset = .init(top: 16, left: 16, bottom: 40, right: 16)
-        $0.delegate = self
         $0.register(
             CardListCollectionViewCell.self,
             forCellWithReuseIdentifier: CardListCollectionViewCell.reuseIdentifier
@@ -57,6 +56,7 @@ final class CardListViewController: BaseViewController, ReactorKit.View {
     override func setConfiguration() {
         super.setConfiguration()
         title = "카드 리스트"
+        collectionView.delegate = self
     }
 
     func bind(reactor: CardListReactor) {
@@ -66,8 +66,8 @@ final class CardListViewController: BaseViewController, ReactorKit.View {
           .disposed(by: disposeBag)
 
         let dataSource = RxCollectionViewSectionedReloadDataSource<CardListSection.CardListSectionModel>(
-            configureCell: { [weak self] dataSource, collectionView, indexPath, item in
-                guard let self = self else { return UICollectionViewCell() }
+            configureCell: { dataSource, collectionView, indexPath, item in
+
                 switch item {
                 case .firstItem(let value):
                     let cell = collectionView.dequeueReusableCell(

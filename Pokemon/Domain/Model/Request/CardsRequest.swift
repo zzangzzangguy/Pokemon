@@ -13,9 +13,9 @@ struct CardsRequest {
     let pageSize: Int?
 
     init(
-        query: String?,
-        page: Int? = 1,
-        pageSize: Int? = 10
+        query: String? = nil,
+        page: Int? = nil,
+        pageSize: Int? = nil
     ) {
         self.query = query
         self.page = page

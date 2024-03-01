@@ -37,10 +37,10 @@ final class CardListReactor: Reactor {
         case .viewDidLoad:
             return Observable.create { [weak self] observer in
                 guard let self = self else { return Disposables.create() }
-                self.pokemonRepository.fetchCards(request: CardsRequest(query: "")) { result in
+                self.pokemonRepository.fetchCards(request: CardsRequest()) { result in
                     switch result {
                     case .success(let cards):
-                        observer.onNext(.setList(cards))
+                        observer.onNext(.setList(cards.data))
                         observer.onCompleted()
 
                     case .failure(let error):

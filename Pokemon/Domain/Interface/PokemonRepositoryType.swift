@@ -10,6 +10,6 @@ import Foundation
 protocol PokemonRepositoryType {
     func fetchCards(
         request: CardsRequest,
-        completion: @escaping (Result<[PokemonCard], Error>) -> Void
+        completion: @escaping (Result<PokemonCards, Error>) -> Void
     )
 }

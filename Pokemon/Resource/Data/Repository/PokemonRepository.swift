@@ -17,13 +17,13 @@ final class PokemonRepository: PokemonRepositoryType {
 extension PokemonRepository {
     func fetchCards(
         request: CardsRequest,
-        completion: @escaping (Result<[PokemonCard], Error>) -> Void
+        completion: @escaping (Result<PokemonCards, Error>) -> Void
     ) {
         provider.request(.fetchCards(parameters: request.toDictionary)) { result in
             switch result {
             case .success(let response):
                 do {
-                    let data = try response.map([PokemonCard].self)
+                    let data = try response.map(PokemonCards.self)
                     completion(.success(data))
 
                 } catch {
