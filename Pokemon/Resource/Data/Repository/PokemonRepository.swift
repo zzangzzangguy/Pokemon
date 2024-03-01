@@ -29,7 +29,6 @@ extension PokemonRepository {
                 } catch {
                     completion(.failure(error))
                 }
-
             case .failure(let error):
                 completion(.failure(error))
             }

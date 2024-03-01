@@ -3,4 +3,70 @@
    uuid = "0D897469-768E-4F4B-975C-AB3ACCA55D77"
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "14D8BD29-8137-450C-9B19-0946C1F93BCF"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Pokemon/Presentation/Search/SearchReactor.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "98"
+            endingLineNumber = "98"
+            landmarkName = "searchQuery(page:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "14D8BD29-8137-450C-9B19-0946C1F93BCF - d648111381cdccf6"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (RxSwift.AnyObserver&lt;Swift.Result&lt;Swift.Array&lt;Pokemon.PokemonCard&gt;, Swift.Error&gt;&gt;) -&gt; RxSwift.Disposable in Pokemon.SearchReactor.searchQuery(page: Swift.Int) -&gt; RxSwift.Observable&lt;Swift.Result&lt;Swift.Array&lt;Pokemon.PokemonCard&gt;, Swift.Error&gt;&gt;"
+                  moduleName = "Pokemon"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/ganghoseong/Pokemon/Pokemon/Presentation/Search/SearchReactor.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "98"
+                  endingLineNumber = "98"
+                  offsetFromSymbolStart = "80">
+               </Location>
+               <Location
+                  uuid = "14D8BD29-8137-450C-9B19-0946C1F93BCF - d5c418a22e414450"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Result&lt;Swift.Array&lt;Pokemon.PokemonCard&gt;, Swift.Error&gt;) -&gt; () in closure #1 (RxSwift.AnyObserver&lt;Swift.Result&lt;Swift.Array&lt;Pokemon.PokemonCard&gt;, Swift.Error&gt;&gt;) -&gt; RxSwift.Disposable in Pokemon.SearchReactor.searchQuery(page: Swift.Int) -&gt; RxSwift.Observable&lt;Swift.Result&lt;Swift.Array&lt;Pokemon.PokemonCard&gt;, Swift.Error&gt;&gt;"
+                  moduleName = "Pokemon"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/ganghoseong/Pokemon/Pokemon/Presentation/Search/SearchReactor.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "98"
+                  endingLineNumber = "98"
+                  offsetFromSymbolStart = "80">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "60A3C2E0-987E-4E5B-B286-2E020814A006"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Pokemon/Presentation/Search/SearchReactor.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "99"
+            endingLineNumber = "99"
+            landmarkName = "searchQuery(page:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>
