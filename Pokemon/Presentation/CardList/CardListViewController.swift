@@ -64,7 +64,7 @@ final class CardListViewController: BaseViewController, ReactorKit.View {
         super.setConfiguration()
         title = "카드 리스트"
 
-        collectionView.delegate = self
+        collectionView.rx.setDelegate(self).disposed(by: disposeBag)
         indicatorView.center = view.center
     }
 
@@ -73,6 +73,17 @@ final class CardListViewController: BaseViewController, ReactorKit.View {
           .map { Reactor.Action.viewDidLoad }
           .bind(to: reactor.action)
           .disposed(by: disposeBag)
+
+        collectionView.rx.contentOffset
+            .filter { [weak self] offset in
+                guard let self = self else { return false }
+
+                guard self.collectionView.frame.height > 0 else { return false }
+                return offset.y + self.collectionView.frame.height >= self.collectionView.contentSize.height - 100
+            }
+            .map { _ in Reactor.Action.loadNextPage }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
 
         let dataSource = RxCollectionViewSectionedReloadDataSource<CardListSection.CardListSectionModel>(
             configureCell: { dataSource, collectionView, indexPath, item in
@@ -100,7 +111,7 @@ final class CardListViewController: BaseViewController, ReactorKit.View {
             .drive(collectionView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
 
-        reactor.state.map { $0.isLoading ?? false }
+        reactor.state.map { $0.isLoading }
             .distinctUntilChanged()
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] isLoading in

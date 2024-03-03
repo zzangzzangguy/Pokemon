@@ -15,6 +15,7 @@ final class CardListReactor: Reactor {
 
     enum Action {
         case viewDidLoad
+        case loadNextPage
     }
 
     enum Mutation {
@@ -24,12 +25,14 @@ final class CardListReactor: Reactor {
     }
 
     struct State {
-        var isLoading: Bool?
+        var isLoading: Bool = false
         let pokemonCards = BehaviorRelay<[PokemonCard]>(value: [])
         var error: Error?
     }
 
     let initialState = State()
+
+    private var request = CardsRequest()
     private let pokemonRepository: PokemonRepositoryType
 
     // MARK: - Init
@@ -48,7 +51,7 @@ final class CardListReactor: Reactor {
                 Observable.create { [weak self] observer in
                     guard let self = self else { return Disposables.create() }
 
-                    self.pokemonRepository.fetchCards(request: CardsRequest()) { result in
+                    self.pokemonRepository.fetchCards(request: self.request) { result in
                         switch result {
                         case .success(let cards):
                             observer.onNext(.setList(cards.data))
@@ -56,11 +59,43 @@ final class CardListReactor: Reactor {
                             observer.onNext(.setError(error))
                         }
 
-                        observer.onNext(.setLoading(false))
                         observer.onCompleted()
                     }
                     return Disposables.create()
-                }
+                },
+                Observable.just(Mutation.setLoading(false))
+            ])
+
+        case .loadNextPage:
+            guard !currentState.isLoading else { return Observable.empty() }
+
+            return Observable.concat([
+                Observable.just(Mutation.setLoading(true)),
+                Observable.create { [weak self] observer in
+                    guard let self = self else { return Disposables.create() }
+
+                    if var page = request.page {
+                        page += 1
+                        self.request.page = page
+                    }
+
+                    self.pokemonRepository.fetchCards(request: self.request) { [weak self] result in
+                        guard let self = self else { return }
+
+                        switch result {
+                        case .success(let cards):
+                            let oldDatas = self.currentState.pokemonCards.value
+                            observer.onNext(.setList(oldDatas + cards.data))
+
+                        case .failure(let error):
+                            observer.onNext(.setError(error))
+                        }
+
+                        observer.onCompleted()
+                    }
+                    return Disposables.create()
+                },
+                Observable.just(Mutation.setLoading(false))
             ])
         }
     }
