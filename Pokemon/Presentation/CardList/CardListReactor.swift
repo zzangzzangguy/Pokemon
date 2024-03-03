@@ -11,6 +11,8 @@ import RxSwift
 
 final class CardListReactor: Reactor {
 
+    // MARK: - Properties
+
     enum Action {
         case viewDidLoad
     }
@@ -21,16 +23,20 @@ final class CardListReactor: Reactor {
     }
 
     struct State {
-        var pokemonCards: [PokemonCard] = []
+        var pokemonCards = BehaviorRelay<[PokemonCard]>(value: [])
         var error: Error?
     }
 
     let initialState = State()
     private let pokemonRepository: PokemonRepositoryType
 
+    // MARK: - Init
+
     init(pokemonRepository: PokemonRepositoryType = PokemonRepository()) {
         self.pokemonRepository = pokemonRepository
     }
+
+    // MARK: - Helpers
 
     func mutate(action: Action) -> Observable<Mutation> {
         switch action {
@@ -57,7 +63,7 @@ final class CardListReactor: Reactor {
         var newState = state
         switch mutation {
         case .setList(let cards):
-            newState.pokemonCards = cards
+            newState.pokemonCards.accept(cards)
 
         case .setError(let error):
             newState.error = error

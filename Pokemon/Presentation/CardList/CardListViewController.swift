@@ -74,11 +74,22 @@ final class CardListViewController: BaseViewController, ReactorKit.View {
                         withReuseIdentifier: CardListCollectionViewCell.reuseIdentifier,
                         for: indexPath
                     ) as! CardListCollectionViewCell
-                    print(value)
+                    print("●", value)
                     return cell
                 }
             }
         )
+
+        reactor.state.map { $0.pokemonCards.value }
+            .asDriver(onErrorJustReturn: [])
+            .map { value in
+                return [CardListSection.CardListSectionModel(
+                    model: 0,
+                    items: value.map { .firstItem($0) }
+                )]
+            }
+            .drive(collectionView.rx.items(dataSource: dataSource))
+            .disposed(by: disposeBag)
     }
 }
 
