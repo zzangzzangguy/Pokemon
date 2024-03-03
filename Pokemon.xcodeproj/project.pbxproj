@@ -28,6 +28,14 @@
 		B400DB342B761B8D00530566 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = B400DB332B761B8D00530566 /* Moya */; };
 		B400DB362B761B9200530566 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = B400DB352B761B9200530566 /* SnapKit */; };
 		B400DB392B761BC000530566 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = B400DB382B761BC000530566 /* Then */; };
+		B4401ABF2B8247C60064166C /* CardListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4401ABE2B8247C60064166C /* CardListCollectionViewCell.swift */; };
+		B4401AC12B8247DA0064166C /* BaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4401AC02B8247DA0064166C /* BaseCollectionViewCell.swift */; };
+		B4401AC42B8248200064166C /* ReusableView+Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4401AC32B8248200064166C /* ReusableView+Ex.swift */; };
+		B4401AC62B82486B0064166C /* BaseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4401AC52B82486B0064166C /* BaseTableViewCell.swift */; };
+		B4401ACA2B8350270064166C /* CardListSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4401AC92B8350270064166C /* CardListSection.swift */; };
+		B4401ACC2B8350A20064166C /* CardListReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4401ACB2B8350A20064166C /* CardListReactor.swift */; };
+		B4401ACE2B8361B40064166C /* UIViewController+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4401ACD2B8361B40064166C /* UIViewController+Rx.swift */; };
+		B4F5AFC22B947AC900084050 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = B4F5AFC12B947AC900084050 /* Kingfisher */; };
 		B4FA7D352B7E470D0058AA93 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4FA7D342B7E470D0058AA93 /* BaseViewController.swift */; };
 		B4FA7D382B7E47550058AA93 /* CardListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4FA7D372B7E47550058AA93 /* CardListViewController.swift */; };
 		B4FA7D3B2B7E47640058AA93 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4FA7D3A2B7E47640058AA93 /* SearchViewController.swift */; };
@@ -71,6 +79,13 @@
 		B400DB122B76187400530566 /* PokemonUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PokemonUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B400DB162B76187400530566 /* PokemonUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonUITests.swift; sourceTree = "<group>"; };
 		B400DB182B76187400530566 /* PokemonUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		B4401ABE2B8247C60064166C /* CardListCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardListCollectionViewCell.swift; sourceTree = "<group>"; };
+		B4401AC02B8247DA0064166C /* BaseCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCollectionViewCell.swift; sourceTree = "<group>"; };
+		B4401AC32B8248200064166C /* ReusableView+Ex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReusableView+Ex.swift"; sourceTree = "<group>"; };
+		B4401AC52B82486B0064166C /* BaseTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTableViewCell.swift; sourceTree = "<group>"; };
+		B4401AC92B8350270064166C /* CardListSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardListSection.swift; sourceTree = "<group>"; };
+		B4401ACB2B8350A20064166C /* CardListReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardListReactor.swift; sourceTree = "<group>"; };
+		B4401ACD2B8361B40064166C /* UIViewController+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Rx.swift"; sourceTree = "<group>"; };
 		B4FA7D342B7E470D0058AA93 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		B4FA7D372B7E47550058AA93 /* CardListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardListViewController.swift; sourceTree = "<group>"; };
 		B4FA7D3A2B7E47640058AA93 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
@@ -87,6 +102,7 @@
 				B400DB322B761B8900530566 /* RxDataSources in Frameworks */,
 				B400DB2E2B761B7400530566 /* RxCocoa in Frameworks */,
 				B400DB392B761BC000530566 /* Then in Frameworks */,
+				B4F5AFC22B947AC900084050 /* Kingfisher in Frameworks */,
 				B400DB362B761B9200530566 /* SnapKit in Frameworks */,
 				B400DB342B761B8D00530566 /* Moya in Frameworks */,
 				B400DB2B2B761ABE00530566 /* ReactorKit in Frameworks */,
@@ -226,6 +242,7 @@
 			isa = PBXGroup;
 			children = (
 				B4FA7D332B7E47020058AA93 /* Common */,
+				B4401ABA2B82477C0064166C /* View */,
 				B4FA7D392B7E47570058AA93 /* CardList */,
 				B4FA7D362B7E47440058AA93 /* Search */,
 			);
@@ -275,11 +292,70 @@
 			path = Request;
 			sourceTree = "<group>";
 		};
+		B4401ABA2B82477C0064166C /* View */ = {
+			isa = PBXGroup;
+			children = (
+				B4401ABB2B8247860064166C /* Cell */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		B4401ABB2B8247860064166C /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				B4401ABC2B8247900064166C /* TableView */,
+				B4401ABD2B8247950064166C /* CollectionView */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		B4401ABC2B8247900064166C /* TableView */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = TableView;
+			sourceTree = "<group>";
+		};
+		B4401ABD2B8247950064166C /* CollectionView */ = {
+			isa = PBXGroup;
+			children = (
+				B4401ABE2B8247C60064166C /* CardListCollectionViewCell.swift */,
+			);
+			path = CollectionView;
+			sourceTree = "<group>";
+		};
+		B4401AC22B82480B0064166C /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				B4401AC32B8248200064166C /* ReusableView+Ex.swift */,
+				B4401ACD2B8361B40064166C /* UIViewController+Rx.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		B4401AC72B8350030064166C /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				B4401AC82B83501F0064166C /* Section */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		B4401AC82B83501F0064166C /* Section */ = {
+			isa = PBXGroup;
+			children = (
+				B4401AC92B8350270064166C /* CardListSection.swift */,
+			);
+			path = Section;
+			sourceTree = "<group>";
+		};
 		B4FA7D332B7E47020058AA93 /* Common */ = {
 			isa = PBXGroup;
 			children = (
 				B4FA7D3E2B7E48970058AA93 /* TabBar */,
+				B4401AC72B8350030064166C /* Components */,
 				B4FA7D3F2B7E489B0058AA93 /* Base */,
+				B4401AC22B82480B0064166C /* Extension */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -295,6 +371,7 @@
 		B4FA7D392B7E47570058AA93 /* CardList */ = {
 			isa = PBXGroup;
 			children = (
+				B4401ACB2B8350A20064166C /* CardListReactor.swift */,
 				B4FA7D372B7E47550058AA93 /* CardListViewController.swift */,
 			);
 			path = CardList;
@@ -312,6 +389,8 @@
 			isa = PBXGroup;
 			children = (
 				B4FA7D342B7E470D0058AA93 /* BaseViewController.swift */,
+				B4401AC02B8247DA0064166C /* BaseCollectionViewCell.swift */,
+				B4401AC52B82486B0064166C /* BaseTableViewCell.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -340,6 +419,7 @@
 				B400DB332B761B8D00530566 /* Moya */,
 				B400DB352B761B9200530566 /* SnapKit */,
 				B400DB382B761BC000530566 /* Then */,
+				B4F5AFC12B947AC900084050 /* Kingfisher */,
 			);
 			productName = Pokemon;
 			productReference = B400DAF22B76187200530566 /* Pokemon.app */;
@@ -420,6 +500,7 @@
 				B400DB282B761AAD00530566 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				B400DB292B761ABE00530566 /* XCRemoteSwiftPackageReference "ReactorKit" */,
 				B400DB372B761BC000530566 /* XCRemoteSwiftPackageReference "Then" */,
+				B4F5AFC02B947AC900084050 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			productRefGroup = B400DAF32B76187200530566 /* Products */;
 			projectDirPath = "";
@@ -465,14 +546,21 @@
 			buildActionMask = 2147483647;
 			files = (
 				4EA179FF2B7A849F006A1D51 /* APIKeyManager.swift in Sources */,
+				B4401ACA2B8350270064166C /* CardListSection.swift in Sources */,
 				B4FA7D3D2B7E48460058AA93 /* TabBarController.swift in Sources */,
 				B400DAF62B76187200530566 /* AppDelegate.swift in Sources */,
 				4EA179F82B7A1342006A1D51 /* PokemonTarget.swift in Sources */,
 				4EA17A012B7B3584006A1D51 /* CardsRequest.swift in Sources */,
+				B4401AC12B8247DA0064166C /* BaseCollectionViewCell.swift in Sources */,
+				B4401ACC2B8350A20064166C /* CardListReactor.swift in Sources */,
+				B4401AC42B8248200064166C /* ReusableView+Ex.swift in Sources */,
 				B4FA7D382B7E47550058AA93 /* CardListViewController.swift in Sources */,
+				B4401ACE2B8361B40064166C /* UIViewController+Rx.swift in Sources */,
 				B4FA7D3B2B7E47640058AA93 /* SearchViewController.swift in Sources */,
 				B4FA7D352B7E470D0058AA93 /* BaseViewController.swift in Sources */,
+				B4401ABF2B8247C60064166C /* CardListCollectionViewCell.swift in Sources */,
 				4EA179F52B7A12DB006A1D51 /* PokemonCard.swift in Sources */,
+				B4401AC62B82486B0064166C /* BaseTableViewCell.swift in Sources */,
 				4EA179FB2B7A1372006A1D51 /* PokemonRepositoryType.swift in Sources */,
 				B4FA7D412B7E4A0E0058AA93 /* AppAppearance.swift in Sources */,
 				B400DAF82B76187200530566 /* SceneDelegate.swift in Sources */,
@@ -867,6 +955,14 @@
 				minimumVersion = 3.0.0;
 			};
 		};
+		B4F5AFC02B947AC900084050 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.11.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -904,6 +1000,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = B400DB372B761BC000530566 /* XCRemoteSwiftPackageReference "Then" */;
 			productName = Then;
+		};
+		B4F5AFC12B947AC900084050 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B4F5AFC02B947AC900084050 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

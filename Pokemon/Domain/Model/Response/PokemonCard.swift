@@ -7,10 +7,24 @@
 
 import Foundation
 
+struct PokemonCards: Codable {
+    let data: [PokemonCard]
+}
+
 struct PokemonCard: Codable {
     let id: String
     let name: String
     let hp: String?
-    let imageUrlSmall: URL
-    let imageUrlLarge: URL
+    let images: PokemonCardImage
+}
+
+struct PokemonCardImage: Codable {
+    let small: URL
+    let large: URL
+}
+
+extension PokemonCard: Equatable {
+    static func == (lhs: PokemonCard, rhs: PokemonCard) -> Bool {
+        return lhs.id == rhs.id
+    }
 }

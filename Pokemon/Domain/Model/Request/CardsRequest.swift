@@ -8,14 +8,14 @@
 import Foundation
 
 struct CardsRequest {
-    let query: String?
-    let page: Int?
-    let pageSize: Int?
+    var query: String?
+    var page: Int?
+    var pageSize: Int?
 
     init(
-        query: String?,
+        query: String? = nil,
         page: Int? = 1,
-        pageSize: Int? = 10
+        pageSize: Int? = nil
     ) {
         self.query = query
         self.page = page
