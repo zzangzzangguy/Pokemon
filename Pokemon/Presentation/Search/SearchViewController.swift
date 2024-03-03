@@ -20,7 +20,7 @@ final class SearchViewController: BaseViewController, UISearchBarDelegate {
     private let searchBar = UISearchBar()
     private var loadingIndicator: UIActivityIndicatorView!
     private var hasSearched = false
-    var reactor: SearchReactor?
+//    var reactor: SearchReactor?
 
 
     // MARK: - Lifecycle
