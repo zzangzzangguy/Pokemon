@@ -18,12 +18,14 @@ final class CardListReactor: Reactor {
     }
 
     enum Mutation {
+        case setLoading(Bool)
         case setList([PokemonCard])
         case setError(Error)
     }
 
     struct State {
-        var pokemonCards = BehaviorRelay<[PokemonCard]>(value: [])
+        var isLoading: Bool?
+        let pokemonCards = BehaviorRelay<[PokemonCard]>(value: [])
         var error: Error?
     }
 
@@ -41,27 +43,34 @@ final class CardListReactor: Reactor {
     func mutate(action: Action) -> Observable<Mutation> {
         switch action {
         case .viewDidLoad:
-            return Observable.create { [weak self] observer in
-                guard let self = self else { return Disposables.create() }
-                self.pokemonRepository.fetchCards(request: CardsRequest()) { result in
-                    switch result {
-                    case .success(let cards):
-                        observer.onNext(.setList(cards.data))
-                        observer.onCompleted()
+            return Observable.concat([
+                Observable.just(Mutation.setLoading(true)),
+                Observable.create { [weak self] observer in
+                    guard let self = self else { return Disposables.create() }
 
-                    case .failure(let error):
-                        observer.onNext(.setError(error))
+                    self.pokemonRepository.fetchCards(request: CardsRequest()) { result in
+                        switch result {
+                        case .success(let cards):
+                            observer.onNext(.setList(cards.data))
+                        case .failure(let error):
+                            observer.onNext(.setError(error))
+                        }
+
+                        observer.onNext(.setLoading(false))
                         observer.onCompleted()
                     }
+                    return Disposables.create()
                 }
-                return Disposables.create()
-            }
+            ])
         }
     }
 
     func reduce(state: State, mutation: Mutation) -> State {
         var newState = state
         switch mutation {
+        case .setLoading(let isLoading):
+            newState.isLoading = isLoading
+
         case .setList(let cards):
             newState.pokemonCards.accept(cards)
 

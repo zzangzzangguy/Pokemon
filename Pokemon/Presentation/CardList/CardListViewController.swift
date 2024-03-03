@@ -13,6 +13,12 @@ final class CardListViewController: BaseViewController, ReactorKit.View {
 
     // MARK: - Properties
 
+    private let indicatorView = UIActivityIndicatorView(
+        frame: CGRect(x: 0, y: 0, width: 50, height: 50)
+    ).then {
+        $0.color = .black
+        $0.style = .large
+    }
     private let collectionView = UICollectionView(
         frame: .zero,
         collectionViewLayout: UICollectionViewFlowLayout()
@@ -44,6 +50,7 @@ final class CardListViewController: BaseViewController, ReactorKit.View {
     override func setView() {
         super.setView()
         view.addSubview(collectionView)
+        view.addSubview(indicatorView)
     }
 
     override func setConstraints() {
@@ -56,7 +63,9 @@ final class CardListViewController: BaseViewController, ReactorKit.View {
     override func setConfiguration() {
         super.setConfiguration()
         title = "카드 리스트"
+
         collectionView.delegate = self
+        indicatorView.center = view.center
     }
 
     func bind(reactor: CardListReactor) {
@@ -89,6 +98,20 @@ final class CardListViewController: BaseViewController, ReactorKit.View {
                 )]
             }
             .drive(collectionView.rx.items(dataSource: dataSource))
+            .disposed(by: disposeBag)
+
+        reactor.state.map { $0.isLoading ?? false }
+            .distinctUntilChanged()
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] isLoading in
+                guard let self = self else { return }
+
+                if isLoading {
+                    self.indicatorView.startAnimating()
+                } else {
+                    self.indicatorView.stopAnimating()
+                }
+            })
             .disposed(by: disposeBag)
     }
 }
