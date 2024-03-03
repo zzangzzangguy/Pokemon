@@ -35,6 +35,7 @@
 		B4401ACA2B8350270064166C /* CardListSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4401AC92B8350270064166C /* CardListSection.swift */; };
 		B4401ACC2B8350A20064166C /* CardListReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4401ACB2B8350A20064166C /* CardListReactor.swift */; };
 		B4401ACE2B8361B40064166C /* UIViewController+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4401ACD2B8361B40064166C /* UIViewController+Rx.swift */; };
+		B4F5AFC22B947AC900084050 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = B4F5AFC12B947AC900084050 /* Kingfisher */; };
 		B4FA7D352B7E470D0058AA93 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4FA7D342B7E470D0058AA93 /* BaseViewController.swift */; };
 		B4FA7D382B7E47550058AA93 /* CardListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4FA7D372B7E47550058AA93 /* CardListViewController.swift */; };
 		B4FA7D3B2B7E47640058AA93 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4FA7D3A2B7E47640058AA93 /* SearchViewController.swift */; };
@@ -101,6 +102,7 @@
 				B400DB322B761B8900530566 /* RxDataSources in Frameworks */,
 				B400DB2E2B761B7400530566 /* RxCocoa in Frameworks */,
 				B400DB392B761BC000530566 /* Then in Frameworks */,
+				B4F5AFC22B947AC900084050 /* Kingfisher in Frameworks */,
 				B400DB362B761B9200530566 /* SnapKit in Frameworks */,
 				B400DB342B761B8D00530566 /* Moya in Frameworks */,
 				B400DB2B2B761ABE00530566 /* ReactorKit in Frameworks */,
@@ -417,6 +419,7 @@
 				B400DB332B761B8D00530566 /* Moya */,
 				B400DB352B761B9200530566 /* SnapKit */,
 				B400DB382B761BC000530566 /* Then */,
+				B4F5AFC12B947AC900084050 /* Kingfisher */,
 			);
 			productName = Pokemon;
 			productReference = B400DAF22B76187200530566 /* Pokemon.app */;
@@ -497,6 +500,7 @@
 				B400DB282B761AAD00530566 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				B400DB292B761ABE00530566 /* XCRemoteSwiftPackageReference "ReactorKit" */,
 				B400DB372B761BC000530566 /* XCRemoteSwiftPackageReference "Then" */,
+				B4F5AFC02B947AC900084050 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			productRefGroup = B400DAF32B76187200530566 /* Products */;
 			projectDirPath = "";
@@ -951,6 +955,14 @@
 				minimumVersion = 3.0.0;
 			};
 		};
+		B4F5AFC02B947AC900084050 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.11.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -988,6 +1000,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = B400DB372B761BC000530566 /* XCRemoteSwiftPackageReference "Then" */;
 			productName = Then;
+		};
+		B4F5AFC12B947AC900084050 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B4F5AFC02B947AC900084050 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

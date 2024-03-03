@@ -74,7 +74,7 @@ final class CardListViewController: BaseViewController, ReactorKit.View {
                         withReuseIdentifier: CardListCollectionViewCell.reuseIdentifier,
                         for: indexPath
                     ) as! CardListCollectionViewCell
-                    print("●", value)
+                    cell.bind(value)
                     return cell
                 }
             }
@@ -100,11 +100,10 @@ extension CardListViewController: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        
-        let width = collectionView.bounds.width - 32
-        let itemWidth = (width - 16) / 2
-        let itemHeight: CGFloat = 200
 
-        return CGSize(width: itemWidth, height: itemHeight)
+        let width = (collectionView.bounds.width - 56) / 3
+        let itemHeight: CGFloat = 220
+
+        return CGSize(width: width, height: itemHeight)
     }
 }
