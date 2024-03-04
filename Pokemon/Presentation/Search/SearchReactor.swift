@@ -49,6 +49,8 @@ class SearchReactor: Reactor {
 
         case .search:
             return Observable.concat([
+                .just(.setSearchResults(.success([]))),
+
                 .just(.setPage(1)),
                 .just(.setCanLoadMore(true)),
                 searchQuery(page: 1)
@@ -94,9 +96,14 @@ class SearchReactor: Reactor {
         }
 
         let request = CardsRequest(query: currentState.query, page: page, pageSize: 10)
-        return Observable.create { observer in
-            self.pokemonRepository.fetchCards(request: request) { result in
-                observer.onNext(result)
+        return Observable.create { [weak self] observer in
+            self?.pokemonRepository.fetchCards(request: request) { result in
+                switch result {
+                case .success(let pokemonCardsContainer):
+                    observer.onNext(.success(pokemonCardsContainer.data))
+                case .failure(let error):
+                    observer.onNext(.failure(error))
+                }
                 observer.onCompleted()
             }
 

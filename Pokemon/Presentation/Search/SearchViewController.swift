@@ -20,7 +20,8 @@ final class SearchViewController: BaseViewController, UISearchBarDelegate {
     private let searchBar = UISearchBar()
     private var loadingIndicator: UIActivityIndicatorView!
     private var hasSearched = false
-//    var reactor: SearchReactor?
+    var diposeBag = DisposeBag()
+    var reactor: SearchReactor?
 
 
     // MARK: - Lifecycle
@@ -40,7 +41,6 @@ final class SearchViewController: BaseViewController, UISearchBarDelegate {
     }
 
     private func bind(reactor: SearchReactor) {
-
         searchBar.rx.text.orEmpty
             .debounce(.milliseconds(500), scheduler: MainScheduler.instance)
             .distinctUntilChanged()
@@ -49,15 +49,14 @@ final class SearchViewController: BaseViewController, UISearchBarDelegate {
             .disposed(by: disposeBag)
 
         searchBar.rx.searchButtonClicked
-              .do(onNext: { [weak self] _ in
-                  self?.showLoadingIndicator()
-                  self?.hasSearched = true
-                  print("검색")
-              })
-              .map { SearchReactor.Action.search }
-              .bind(to: reactor.action)
-              .disposed(by: disposeBag)
-
+            .do(onNext: { [weak self] _ in
+                self?.showLoadingIndicator()
+                self?.hasSearched = true
+                print("검색")
+            })
+            .map { SearchReactor.Action.search }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
 
 
         searchBar.rx.textDidEndEditing
@@ -66,39 +65,38 @@ final class SearchViewController: BaseViewController, UISearchBarDelegate {
             .disposed(by: disposeBag)
 
 
-        // State 에서 View 로
-
         reactor.state
-                .map { $0.searchResult }
-                .filter { _ in self.hasSearched }
-                .subscribe(onNext: { [weak self] result in
-                    DispatchQueue.main.async {
-                                      self?.hideLoadingIndicator()
-                                  }
-                    switch result {
-                    case .success(let pokemonCards):
-                        self?.hasSearched = false
-                        if pokemonCards.isEmpty {
-                            self?.showNoResultsAlert()
-                        } else {
+            .map { $0.searchResult }
+            .debug("Search Result")
+            .filter { [weak self] _ in self?.hasSearched ?? false }
+            .subscribe(onNext: { [weak self] result in
+                DispatchQueue.main.async {
+                    self?.hideLoadingIndicator()
+                }
+                switch result {
+                case .success(let pokemonCards):
+                    self?.hasSearched = false
+                    if pokemonCards.isEmpty {
+                        self?.showNoResultsAlert()
+                    } else {
+                        // 검색 결과가 있을 때만 테이블 뷰에 표시
+                        if let self = self {
                             let sectionModel = [SectionModel(model: "", items: pokemonCards)]
                             Observable.just(sectionModel)
-                                .bind(to: self!.tableView.rx.items(dataSource: self!.dataSource()))
-                                .disposed(by: self!.disposeBag)
+                                .bind(to: self.tableView.rx.items(dataSource: self.dataSource()))
+                                .disposed(by: self.disposeBag)
                         }
-                    case .failure(let error):
-                        print("검색 실패: \(error)")
-
-                        self?.hasSearched = false
-                        self?.showNoResultsAlert()
-                    default:
-                        break
                     }
-                })
-                .disposed(by: disposeBag)
-        }
-    
-
+                case .failure(let error):
+                    print("검색 실패: \(error)")
+                    self?.hasSearched = false
+                    self?.showNoResultsAlert()
+                default:
+                    break
+                }
+            })
+            .disposed(by: disposeBag)
+    }
 
     // MARK: - Helpers
 
@@ -111,14 +109,12 @@ final class SearchViewController: BaseViewController, UISearchBarDelegate {
 
         tableView.register(PokemonCardTableViewCell.self, forCellReuseIdentifier: "Cell")
         view.addSubview(tableView)
-        tableView.delegate = self
+        //        tableView.delegate = self
 
         loadingIndicator = UIActivityIndicatorView(style: .large)
-               loadingIndicator.color = .black
-               view.addSubview(loadingIndicator)
-           }
-    
-
+        loadingIndicator.color = .black
+        view.addSubview(loadingIndicator)
+    }
 
     override func setConstraints() {
         super.setConstraints()
@@ -126,7 +122,6 @@ final class SearchViewController: BaseViewController, UISearchBarDelegate {
             $0.edges.equalToSuperview()
         }
     }
-
     private func dataSource() -> RxTableViewSectionedReloadDataSource<SectionModel<String, PokemonCard>> {
         return RxTableViewSectionedReloadDataSource<SectionModel<String, PokemonCard>>(
             configureCell: { _, tableView, indexPath, item in
@@ -135,27 +130,26 @@ final class SearchViewController: BaseViewController, UISearchBarDelegate {
                 return cell
             }
         )
-        
+
     }
     private func showLoadingIndicator() {
-           loadingIndicator.startAnimating()
-           loadingIndicator.isHidden = false
-       }
+        loadingIndicator.startAnimating()
+        loadingIndicator.isHidden = false
+    }
 
-       private func hideLoadingIndicator() {
-           loadingIndicator.stopAnimating()
-           loadingIndicator.isHidden = true
-       }
+    private func hideLoadingIndicator() {
+        loadingIndicator.stopAnimating()
+        loadingIndicator.isHidden = true
+    }
 
-       private func showNoResultsAlert() {
-           let alertController = UIAlertController(title: "검색 결과 없음", message: "입력한 검색어에 해당하는 포켓몬이 없음.", preferredStyle: .alert)
-           alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
-           present(alertController, animated: true, completion: nil)
-       }
+    private func showNoResultsAlert() {
+        let alertController = UIAlertController(title: "검색 결과 없음", message: "입력한 검색어에 해당하는 포켓몬이 없음.", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+        present(alertController, animated: true, completion: nil)
+    }
 
     override func setConfiguration() {
         super.setConfiguration()
-        tableView.delegate = self
     }
 }
 extension SearchViewController: UITableViewDelegate {

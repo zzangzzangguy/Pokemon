@@ -13,7 +13,6 @@ import RxDataSources
 
 class PokemonCardTableViewCell: UITableViewCell {
     let cardImageView = UIImageView().then {
-//        $0.backgroundColor = .red
         $0.contentMode = .scaleAspectFit
         $0.clipsToBounds = true
     }
@@ -59,7 +58,7 @@ class PokemonCardTableViewCell: UITableViewCell {
 
     func configure(with card: PokemonCard) {
         nameLabel.text = card.name
-        cardImageView.kf.setImage(with: card.imageUrlSmall, placeholder: UIImage(named: "placeholder"), options: [.transition(.fade(1))], completionHandler:  { result in
+        cardImageView.kf.setImage(with: card.images.small, placeholder: UIImage(named: "placeholder"), options: [.transition(.fade(1))], completionHandler:  { result in
             switch result {
             case .success(let value):
                 print("이미지 로드 성공: \(value.source.url?.absoluteString ?? "")")
