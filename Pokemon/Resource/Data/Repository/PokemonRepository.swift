@@ -25,11 +25,11 @@ extension PokemonRepository {
                 do {
                     let data = try response.map(PokemonCards.self)
                     completion(.success(data))
-
                 } catch {
                     completion(.failure(error))
                 }
             case .failure(let error):
+                print("네트워크 에러: \(error.localizedDescription)")
                 completion(.failure(error))
             }
         }

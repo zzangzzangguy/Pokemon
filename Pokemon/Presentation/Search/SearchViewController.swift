@@ -12,27 +12,23 @@ import RxCocoa
 import RxDataSources
 import ReactorKit
 
-final class SearchViewController: BaseViewController, UISearchBarDelegate {
-
-
+final class SearchViewController: BaseViewController {
     // MARK: - Properties
     private let tableView = UITableView()
     private let searchBar = UISearchBar()
     private var loadingIndicator: UIActivityIndicatorView!
-    private var hasSearched = false
-    var diposeBag = DisposeBag()
     var reactor: SearchReactor?
-
+    private var dataSource: RxTableViewSectionedReloadDataSource<SectionModel<String, PokemonCard>>?
 
     // MARK: - Lifecycle
-
     override func viewDidLoad() {
         super.viewDidLoad()
+        initReactor()
         setView()
         setConstraints()
         setConfiguration()
-        initReactor()
     }
+
     private func initReactor() {
         self.reactor = SearchReactor(pokemonRepository: PokemonRepository())
         if let reactor = self.reactor {
@@ -42,64 +38,46 @@ final class SearchViewController: BaseViewController, UISearchBarDelegate {
 
     private func bind(reactor: SearchReactor) {
         searchBar.rx.text.orEmpty
-            .debounce(.milliseconds(500), scheduler: MainScheduler.instance)
+            .throttle(.milliseconds(300), scheduler: MainScheduler.instance)
             .distinctUntilChanged()
             .map { SearchReactor.Action.updateSearchQuery($0) }
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
 
-        searchBar.rx.searchButtonClicked
-            .do(onNext: { [weak self] _ in
-                self?.showLoadingIndicator()
-                self?.hasSearched = true
-                print("검색")
+        reactor.state
+            .map { $0.isLoading }
+            .distinctUntilChanged()
+            .subscribe(onNext: { [weak self] isLoading in
+                if isLoading {
+                    self?.showLoadingIndicator()
+                } else {
+                    self?.hideLoadingIndicator()
+                }
             })
-            .map { SearchReactor.Action.search }
-            .bind(to: reactor.action)
             .disposed(by: disposeBag)
-
-
-        searchBar.rx.textDidEndEditing
-            .map { SearchReactor.Action.search }
-            .bind(to: reactor.action)
-            .disposed(by: disposeBag)
-
 
         reactor.state
             .map { $0.searchResult }
-            .debug("Search Result")
-            .filter { [weak self] _ in self?.hasSearched ?? false }
+            .compactMap { $0 }
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] result in
-                DispatchQueue.main.async {
-                    self?.hideLoadingIndicator()
-                }
                 switch result {
                 case .success(let pokemonCards):
-                    self?.hasSearched = false
                     if pokemonCards.isEmpty {
                         self?.showNoResultsAlert()
                     } else {
-                        // 검색 결과가 있을 때만 테이블 뷰에 표시
-                        if let self = self {
-                            let sectionModel = [SectionModel(model: "", items: pokemonCards)]
-                            Observable.just(sectionModel)
-                                .bind(to: self.tableView.rx.items(dataSource: self.dataSource()))
-                                .disposed(by: self.disposeBag)
-                        }
+                        let sectionModel = [SectionModel(model: "", items: pokemonCards)]
+                        self?.dataSource?.setSections(sectionModel)
+                        self?.tableView.reloadData()
                     }
                 case .failure(let error):
-                    print("검색 실패: \(error)")
-                    self?.hasSearched = false
-                    self?.showNoResultsAlert()
-                default:
-                    break
+                    self?.showErrorAlert(message: error.localizedDescription)
                 }
             })
             .disposed(by: disposeBag)
     }
 
     // MARK: - Helpers
-
     override func setView() {
         super.setView()
 
@@ -107,9 +85,8 @@ final class SearchViewController: BaseViewController, UISearchBarDelegate {
         navigationItem.titleView = searchBar
         searchBar.delegate = self
 
-        tableView.register(PokemonCardTableViewCell.self, forCellReuseIdentifier: "Cell")
+        tableView.register(PokemonCardTableViewCell.self, forCellReuseIdentifier: PokemonCardTableViewCell.reuseIdentifier)
         view.addSubview(tableView)
-        //        tableView.delegate = self
 
         loadingIndicator = UIActivityIndicatorView(style: .large)
         loadingIndicator.color = .black
@@ -122,39 +99,78 @@ final class SearchViewController: BaseViewController, UISearchBarDelegate {
             $0.edges.equalToSuperview()
         }
     }
-    private func dataSource() -> RxTableViewSectionedReloadDataSource<SectionModel<String, PokemonCard>> {
-        return RxTableViewSectionedReloadDataSource<SectionModel<String, PokemonCard>>(
-            configureCell: { _, tableView, indexPath, item in
-                let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! PokemonCardTableViewCell
+
+    private func setDataSource() {
+        dataSource = RxTableViewSectionedReloadDataSource<SectionModel<String, PokemonCard>>(
+            configureCell: { [weak self] _, tableView, indexPath, item in
+                let cell = tableView.dequeueReusableCell(withIdentifier: PokemonCardTableViewCell.reuseIdentifier, for: indexPath) as! PokemonCardTableViewCell
                 cell.configure(with: item)
+
+                if let reactor = self?.reactor {
+                    switch reactor.currentState.searchResult {
+                    case .success(let pokemonCards):
+                        if indexPath.row == pokemonCards.count - 1 {
+                            reactor.action.onNext(.loadMore)
+                        }
+                    case .failure, .none:
+                        break
+                    }
+                }
+
                 return cell
             }
         )
-
     }
+
     private func showLoadingIndicator() {
-        loadingIndicator.startAnimating()
-        loadingIndicator.isHidden = false
+        DispatchQueue.main.async {
+            self.loadingIndicator.startAnimating()
+            self.loadingIndicator.isHidden = false
+        }
     }
 
     private func hideLoadingIndicator() {
-        loadingIndicator.stopAnimating()
-        loadingIndicator.isHidden = true
+        DispatchQueue.main.async {
+            self.loadingIndicator.stopAnimating()
+            self.loadingIndicator.isHidden = true
+        }
     }
 
     private func showNoResultsAlert() {
-        let alertController = UIAlertController(title: "검색 결과 없음", message: "입력한 검색어에 해당하는 포켓몬이 없음.", preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
-        present(alertController, animated: true, completion: nil)
+        if presentedViewController == nil {
+            let alertController = UIAlertController(title: "검색 결과 없음", message: "입력한 검색어에 해당하는 포켓몬이 없습니다.", preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+            present(alertController, animated: true, completion: nil)
+        }
+    }
+
+    private func showErrorAlert(message: String) {
+        if presentedViewController == nil {
+            let alertController = UIAlertController(title: "에러", message: message, preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+            present(alertController, animated: true, completion: nil)
+        }
     }
 
     override func setConfiguration() {
         super.setConfiguration()
+        setDataSource()
+        tableView.dataSource = dataSource
+        tableView.delegate = self
     }
 }
+
+extension SearchViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        guard let query = searchBar.text, !query.isEmpty else {
+            return
+        }
+        reactor?.action.onNext(.search(query))
+    }
+}
+
 extension SearchViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 180
-
     }
 }

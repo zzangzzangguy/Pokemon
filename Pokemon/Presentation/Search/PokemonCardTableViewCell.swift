@@ -9,7 +9,6 @@ import UIKit
 import Kingfisher
 import Then
 import SnapKit
-import RxDataSources
 
 class PokemonCardTableViewCell: UITableViewCell {
     let cardImageView = UIImageView().then {
@@ -41,29 +40,34 @@ class PokemonCardTableViewCell: UITableViewCell {
     private func setupLayout() {
         cardImageView.snp.makeConstraints {
             $0.top.left.equalToSuperview().offset(10)
-                $0.width.height.equalTo(150)
-            }
+            $0.width.height.equalTo(150)
+        }
 
-               nameLabel.snp.makeConstraints {
-                   $0.leading.equalTo(cardImageView.snp.trailing).offset(10) //
-                   $0.trailing.equalToSuperview().inset(10)
-               }
-           }
+        nameLabel.snp.makeConstraints {
+            $0.leading.equalTo(cardImageView.snp.trailing).offset(10) 
+            $0.trailing.equalToSuperview().inset(10)
+        }
+    }
 
     override func prepareForReuse() {
         super.prepareForReuse()
+        cardImageView.kf.cancelDownloadTask()
         cardImageView.image = nil
         nameLabel.text = nil
     }
 
+    
     func configure(with card: PokemonCard) {
         nameLabel.text = card.name
+        print("이미지 URL: \(card.images.small.absoluteString)")
         cardImageView.kf.setImage(with: card.images.small, placeholder: UIImage(named: "placeholder"), options: [.transition(.fade(1))], completionHandler:  { result in
-            switch result {
-            case .success(let value):
-                print("이미지 로드 성공: \(value.source.url?.absoluteString ?? "")")
-            case .failure(let error):
-                print("이미지 로드 실패: \(error.localizedDescription)")
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let value):
+                    print("이미지 로드 성공: \(value.source.url?.absoluteString ?? "")")
+                case .failure(let error):
+                    print("이미지 로드 실패: \(error.localizedDescription)")
+                }
             }
         })
     }

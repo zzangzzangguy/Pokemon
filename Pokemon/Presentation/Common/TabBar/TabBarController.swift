@@ -29,6 +29,7 @@ final class TabBarController: UITabBarController {
             )
         )
 
+
         let search = templateTabBarController(
             unselectedImage: UIImage(systemName: "magnifyingglass.circle")!,
             selectedImage: UIImage(systemName: "magnifyingglass.circle.fill")!,
