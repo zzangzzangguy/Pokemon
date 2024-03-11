@@ -52,6 +52,8 @@ final class SearchViewController: BaseViewController {
                     self?.showLoadingIndicator()
                 } else {
                     self?.hideLoadingIndicator()
+                    self?.hideLoadingIndicator()
+                    self?.hideLoadingIndicator()
                 }
             })
             .disposed(by: disposeBag)
@@ -97,6 +99,10 @@ final class SearchViewController: BaseViewController {
         super.setConstraints()
         tableView.snp.makeConstraints {
             $0.edges.equalToSuperview()
+
+        }
+        loadingIndicator.snp.makeConstraints {
+            $0.center.equalToSuperview()
         }
     }
 
@@ -123,18 +129,15 @@ final class SearchViewController: BaseViewController {
     }
 
     private func showLoadingIndicator() {
-        DispatchQueue.main.async {
-            self.loadingIndicator.startAnimating()
-            self.loadingIndicator.isHidden = false
-        }
+        self.loadingIndicator.startAnimating()
+        self.loadingIndicator.isHidden = false
     }
 
     private func hideLoadingIndicator() {
-        DispatchQueue.main.async {
-            self.loadingIndicator.stopAnimating()
-            self.loadingIndicator.isHidden = true
-        }
+        self.loadingIndicator.stopAnimating()
+        self.loadingIndicator.isHidden = true
     }
+
 
     private func showNoResultsAlert() {
         if presentedViewController == nil {
@@ -156,7 +159,9 @@ final class SearchViewController: BaseViewController {
         super.setConfiguration()
         setDataSource()
         tableView.dataSource = dataSource
-        tableView.delegate = self
+                tableView.delegate = self
+//        tableView.rx.setDelegate(self).disposed(by: disposeBag)
+
     }
 }
 
@@ -172,5 +177,14 @@ extension SearchViewController: UISearchBarDelegate {
 extension SearchViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 180
+    }
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard let dataSource = self.dataSource else { return }
+
+        let section = dataSource.sectionModels
+        let itemsCount = section[indexPath.section].items.count
+        if indexPath.row == itemsCount - 1, let reactor = self.reactor { 
+            reactor.action.onNext(.loadMore)
+        }
     }
 }
