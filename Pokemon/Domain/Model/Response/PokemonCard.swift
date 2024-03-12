@@ -16,6 +16,7 @@ struct PokemonCard: Codable {
     let name: String
     let hp: String?
     let images: PokemonCardImage
+    let types: [String]?
 }
 
 struct PokemonCardImage: Codable {

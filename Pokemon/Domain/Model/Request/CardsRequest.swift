@@ -33,6 +33,7 @@ struct CardsRequest {
         if let pageSize = pageSize {
             dictionary["page_size"] = pageSize
         }
+        print("Request Parameters: \(dictionary)") // 로그 출력
         return dictionary
     }
 }

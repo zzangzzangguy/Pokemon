@@ -17,8 +17,13 @@ class PokemonCardTableViewCell: UITableViewCell {
     }
 
     let nameLabel = UILabel().then {
-        $0.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        $0.font = UIFont.systemFont(ofSize: 20, weight: .bold)
         $0.textColor = .black
+    }
+
+    let hpLabel = UILabel().then {
+        $0.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        $0.textColor = .red
     }
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -35,6 +40,7 @@ class PokemonCardTableViewCell: UITableViewCell {
     private func setupView() {
         self.contentView.addSubview(cardImageView)
         self.contentView.addSubview(nameLabel)
+        self.contentView.addSubview(hpLabel)
     }
 
     private func setupLayout() {
@@ -47,6 +53,10 @@ class PokemonCardTableViewCell: UITableViewCell {
             $0.leading.equalTo(cardImageView.snp.trailing).offset(10) 
             $0.trailing.equalToSuperview().inset(10)
         }
+        hpLabel.snp.makeConstraints {
+            $0.top.equalTo(nameLabel.snp.bottom).offset(4)
+            $0.leading.equalTo(nameLabel.snp.leading)
+        }
     }
 
     override func prepareForReuse() {
@@ -56,9 +66,14 @@ class PokemonCardTableViewCell: UITableViewCell {
         nameLabel.text = nil
     }
 
-    
     func configure(with card: PokemonCard) {
         nameLabel.text = card.name
+        if let hp = card.hp {
+                 hpLabel.text = "HP: \(hp)"
+             } else {
+                 hpLabel.text = "HP: -"
+             }
+        
         print("이미지 URL: \(card.images.small.absoluteString)")
         cardImageView.kf.setImage(with: card.images.small, placeholder: UIImage(named: "placeholder"), options: [.transition(.fade(1))], completionHandler:  { result in
             DispatchQueue.main.async {

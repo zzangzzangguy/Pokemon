@@ -52,8 +52,6 @@ final class SearchViewController: BaseViewController {
                     self?.showLoadingIndicator()
                 } else {
                     self?.hideLoadingIndicator()
-                    self?.hideLoadingIndicator()
-                    self?.hideLoadingIndicator()
                 }
             })
             .disposed(by: disposeBag)
@@ -159,7 +157,7 @@ final class SearchViewController: BaseViewController {
         super.setConfiguration()
         setDataSource()
         tableView.dataSource = dataSource
-                tableView.delegate = self
+        tableView.delegate = self
 //        tableView.rx.setDelegate(self).disposed(by: disposeBag)
 
     }

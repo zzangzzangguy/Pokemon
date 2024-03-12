@@ -124,7 +124,7 @@ class SearchReactor: Reactor {
             return .just(.success([]))
         }
 
-        let request = CardsRequest(query: query, page: page, pageSize: 10)
+        let request = CardsRequest(query: query, page: page, pageSize: 5)
         return Observable.create { [weak self] observer in
             self?.pokemonRepository.fetchCards(request: request) { result in
                 switch result {
