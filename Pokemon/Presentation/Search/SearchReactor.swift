@@ -1,10 +1,3 @@
-//
-//  SearchReactor.swift
-//  Pokemon
-//
-//  Created by 김기현 on 2/21/24.
-//
-
 import ReactorKit
 import RxSwift
 
@@ -37,6 +30,7 @@ class SearchReactor: Reactor {
         var isLoading: Bool = false
         var page: Int = 1
         var canLoadMore: Bool = true
+        var totalCount: Int = 0
     }
 
     func mutate(action: Action) -> Observable<Mutation> {
@@ -124,7 +118,7 @@ class SearchReactor: Reactor {
             return .just(.success([]))
         }
 
-        let request = CardsRequest(query: query, page: page, pageSize: 5)
+        let request = CardsRequest(query: query, page: page, pageSize: 1)
         return Observable.create { [weak self] observer in
             self?.pokemonRepository.fetchCards(request: request) { result in
                 switch result {

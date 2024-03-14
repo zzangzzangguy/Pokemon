@@ -68,11 +68,8 @@ class PokemonCardTableViewCell: UITableViewCell {
 
     func configure(with card: PokemonCard) {
         nameLabel.text = card.name
-        if let hp = card.hp {
-                 hpLabel.text = "HP: \(hp)"
-             } else {
-                 hpLabel.text = "HP: -"
-             }
+        hpLabel.text = card.hp.map { "HP: \($0)" } ?? "HP: -"
+
         
         print("이미지 URL: \(card.images.small.absoluteString)")
         cardImageView.kf.setImage(with: card.images.small, placeholder: UIImage(named: "placeholder"), options: [.transition(.fade(1))], completionHandler:  { result in

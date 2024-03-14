@@ -33,7 +33,11 @@ final class TabBarController: UITabBarController {
         let search = templateTabBarController(
             unselectedImage: UIImage(systemName: "magnifyingglass.circle")!,
             selectedImage: UIImage(systemName: "magnifyingglass.circle.fill")!,
-            rootViewController: SearchViewController()
+            rootViewController: SearchViewController(
+                reactor: SearchReactor(
+                    pokemonRepository: PokemonRepository()
+                )
+            )
         )
 
         viewControllers = [cardList, search]
