@@ -3,6 +3,7 @@ import RxSwift
 
 class SearchReactor: Reactor {
     var initialState = State()
+
     private let pokemonRepository: PokemonRepositoryType
 
     init(pokemonRepository: PokemonRepositoryType) {
@@ -12,25 +13,23 @@ class SearchReactor: Reactor {
     enum Action {
         case updateSearchQuery(String)
         case search(String)
-        case loadMore
+        case loadNextPage
     }
 
     enum Mutation {
         case setQuery(String)
-        case setSearchResults(Result<[PokemonCard], Error>)
-        case appendSearchResults(Result<[PokemonCard], Error>)
+        case setSearchResults([PokemonCard])
+        case appendSearchResults([PokemonCard])
         case setLoading(Bool)
-        case setPage(Int)
         case setCanLoadMore(Bool)
+        
     }
 
     struct State {
         var query: String = ""
-        var searchResult: Result<[PokemonCard], Error>?
+        var searchResult: [PokemonCard] = []
         var isLoading: Bool = false
-        var page: Int = 1
         var canLoadMore: Bool = true
-        var totalCount: Int = 0
     }
 
     func mutate(action: Action) -> Observable<Mutation> {
@@ -39,96 +38,84 @@ class SearchReactor: Reactor {
             return .just(.setQuery(query))
 
         case .search(let query):
-            guard !query.isEmpty && !currentState.isLoading else {
-                return .empty()
+            guard !query.isEmpty else {
+                return .concat([
+                    .just(.setLoading(false)),
+                    .just(.setSearchResults([]))
+                ])
             }
-            return Observable.concat([
-                .just(.setQuery(query)),
-                .just(.setLoading(true)),
-                searchQuery(query: query, page: 1)
-                    .map { result in
-                        switch result {
-                        case .success(let cards):
-                            return Mutation.setSearchResults(.success(cards))
-                        case .failure(let error):
-                            return Mutation.setSearchResults(.failure(error))
-                        }
-                    },
-                .just(.setLoading(false))
-            ])
 
-        case .loadMore:
-            guard currentState.canLoadMore && !currentState.isLoading else {
+            let initialPage = 1
+
+            return .concat([
+                       .just(.setLoading(true)),
+                       searchQuery(query: query, page: initialPage)
+                           .map { results in
+                               if results.isEmpty {
+                                   return .setSearchResults([])
+                               } else {
+                                   return .setSearchResults(results)
+                               }
+                           },
+                       .just(.setLoading(false))
+                   ])
+        case .loadNextPage:
+            guard !currentState.isLoading, currentState.canLoadMore else {
                 return .empty()
             }
-            let nextPage = currentState.page + 1
-            return Observable.concat([
+
+            let nextPage = (currentState.searchResult.count / 20) + 1
+
+            return .concat([
                 .just(.setLoading(true)),
                 searchQuery(query: currentState.query, page: nextPage)
-                    .map { result in
-                        switch result {
-                        case .success(let cards):
-                            return Mutation.appendSearchResults(.success(cards))
-                        case .failure(let error):
-                            return Mutation.appendSearchResults(.failure(error))
-                        }
-                    },
+                    .map { .appendSearchResults($0) },
                 .just(.setLoading(false)),
-                .just(.setPage(nextPage))
+                .just(.setCanLoadMore(true))
             ])
         }
     }
 
     func reduce(state: State, mutation: Mutation) -> State {
         var newState = state
+
         switch mutation {
         case .setQuery(let query):
             newState.query = query
-            newState.searchResult = nil
 
         case .setSearchResults(let result):
             newState.searchResult = result
             newState.canLoadMore = true
 
-        case .appendSearchResults(let result):
-            switch (result, newState.searchResult) {
-            case (.success(let newCards), .success(let currentCards)):
-                newState.searchResult = .success(currentCards + newCards)
-            case (.failure(let error), _):
-                newState.searchResult = .failure(error)
-                newState.canLoadMore = false
-            default:
-                break
-            }
+        case .appendSearchResults(let results):
+            newState.searchResult += results
 
         case .setLoading(let isLoading):
             newState.isLoading = isLoading
 
-        case .setPage(let page):
-            newState.page = page
-
         case .setCanLoadMore(let canLoadMore):
             newState.canLoadMore = canLoadMore
         }
+
         return newState
     }
 
-    private func searchQuery(query: String, page: Int) -> Observable<Result<[PokemonCard], Error>> {
-        guard !query.isEmpty else {
-            return .just(.success([]))
-        }
+    private func searchQuery(query: String, page: Int) -> Observable<[PokemonCard]> {
+        let pageSize = 20
+        let request = CardsRequest(query: query, page: page, pageSize: pageSize)
 
-        let request = CardsRequest(query: query, page: page, pageSize: 1)
-        return Observable.create { [weak self] observer in
-            self?.pokemonRepository.fetchCards(request: request) { result in
+        return Observable.create { observer in
+            self.pokemonRepository.fetchCards(request: request) { result in
                 switch result {
-                case .success(let pokemonCardsContainer):
-                    observer.onNext(.success(pokemonCardsContainer.data))
-                case .failure(let error):
-                    observer.onNext(.failure(error))
+                case .success(let response):
+                    observer.onNext(response.data)
+                case .failure:
+                    observer.onNext([])
                 }
+
                 observer.onCompleted()
             }
+
             return Disposables.create()
         }
     }
