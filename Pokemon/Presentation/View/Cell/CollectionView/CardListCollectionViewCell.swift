@@ -24,6 +24,11 @@ final class CardListCollectionViewCell: BaseCollectionViewCell<PokemonCard> {
         $0.font = .systemFont(ofSize: 16)
         $0.textColor = .black
     }
+    private let favoriteButton = UIButton(type: .system).then {
+        $0.setImage(UIImage(systemName: "star"), for: .normal)
+        $0.setImage(UIImage(systemName: "star.fill"), for: .selected)
+        $0.tintColor = .systemYellow
+    }
 
     // MARK: - Helpers
 
@@ -32,32 +37,38 @@ final class CardListCollectionViewCell: BaseCollectionViewCell<PokemonCard> {
         contentView.addSubview(imageView)
         contentView.addSubview(hpTextLabel)
         contentView.addSubview(nameLabel)
+        contentView.addSubview(favoriteButton)
     }
 
     override func setConstraints() {
         super.setConstraints()
-        imageView.snp.makeConstraints { make in
-            make.top.leading.trailing.equalToSuperview()
+        imageView.snp.makeConstraints {
+            $0.top.leading.trailing.equalToSuperview()
         }
-        hpTextLabel.snp.makeConstraints { make in
-            make.top.equalTo(imageView.snp.bottom).offset(12)
-            make.leading.trailing.equalToSuperview().inset(8)
+        hpTextLabel.snp.makeConstraints {
+            $0.top.equalTo(imageView.snp.bottom).offset(12)
+            $0.leading.trailing.equalToSuperview().inset(8)
         }
-        nameLabel.snp.makeConstraints { make in
-            make.top.equalTo(hpTextLabel.snp.bottom).offset(2)
-            make.leading.trailing.equalToSuperview().inset(8)
-            make.bottom.equalToSuperview()
+        nameLabel.snp.makeConstraints {
+            $0.top.equalTo(hpTextLabel.snp.bottom).offset(2)
+            $0.leading.trailing.equalToSuperview().inset(8)
+            $0.bottom.equalToSuperview()
+        }
+        favoriteButton.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(10)
+            $0.right.equalToSuperview().inset(10)
+            $0.width.height.equalTo(30)
         }
     }
 
-    override func bind(_ model: PokemonCard?) {
-        super.bind(model)
+override func bind(_ model: PokemonCard?) {
+    super.bind(model)
 
-        imageView.kf.setImage(
-            with: model?.images.large,
-            options: [.transition(.fade(1))]
-        )
-        nameLabel.text = model?.name ?? ""
-        hpTextLabel.text = "hp \(model?.hp ?? "")"
-    }
+    imageView.kf.setImage(
+        with: model?.images.large,
+        options: [.transition(.fade(1))]
+    )
+    nameLabel.text = model?.name ?? ""
+    hpTextLabel.text = "hp \(model?.hp ?? "")"
+}
 }

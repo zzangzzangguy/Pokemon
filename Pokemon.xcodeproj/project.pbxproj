@@ -16,6 +16,9 @@
 		4EA179FD2B7A1573006A1D51 /* PokemonRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA179FC2B7A1573006A1D51 /* PokemonRepository.swift */; };
 		4EA179FF2B7A849F006A1D51 /* APIKeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA179FE2B7A849E006A1D51 /* APIKeyManager.swift */; };
 		4EA17A012B7B3584006A1D51 /* CardsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA17A002B7B3584006A1D51 /* CardsRequest.swift */; };
+		4EACAF052BA54E1400BE4109 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 4EACAF042BA54E1400BE4109 /* Realm */; };
+		4EACAF072BA54E1400BE4109 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 4EACAF062BA54E1400BE4109 /* RealmSwift */; };
+		4EACAF092BA5513200BE4109 /* RealmPokeonCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EACAF082BA5513200BE4109 /* RealmPokeonCard.swift */; };
 		B400DAF62B76187200530566 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B400DAF52B76187200530566 /* AppDelegate.swift */; };
 		B400DAF82B76187200530566 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B400DAF72B76187200530566 /* SceneDelegate.swift */; };
 		B400DAFF2B76187300530566 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B400DAFE2B76187300530566 /* Assets.xcassets */; };
@@ -72,6 +75,7 @@
 		4EA179FC2B7A1573006A1D51 /* PokemonRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonRepository.swift; sourceTree = "<group>"; };
 		4EA179FE2B7A849E006A1D51 /* APIKeyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIKeyManager.swift; sourceTree = "<group>"; };
 		4EA17A002B7B3584006A1D51 /* CardsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsRequest.swift; sourceTree = "<group>"; };
+		4EACAF082BA5513200BE4109 /* RealmPokeonCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmPokeonCard.swift; sourceTree = "<group>"; };
 		B400DAF22B76187200530566 /* Pokemon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pokemon.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B400DAF52B76187200530566 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B400DAF72B76187200530566 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -108,7 +112,9 @@
 				B400DB392B761BC000530566 /* Then in Frameworks */,
 				B4F5AFC22B947AC900084050 /* Kingfisher in Frameworks */,
 				B400DB362B761B9200530566 /* SnapKit in Frameworks */,
+				4EACAF052BA54E1400BE4109 /* Realm in Frameworks */,
 				B400DB342B761B8D00530566 /* Moya in Frameworks */,
+				4EACAF072BA54E1400BE4109 /* RealmSwift in Frameworks */,
 				B400DB2B2B761ABE00530566 /* ReactorKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -284,6 +290,7 @@
 			isa = PBXGroup;
 			children = (
 				4EA179F42B7A12DB006A1D51 /* PokemonCard.swift */,
+				4EACAF082BA5513200BE4109 /* RealmPokeonCard.swift */,
 			);
 			path = Response;
 			sourceTree = "<group>";
@@ -426,6 +433,8 @@
 				B400DB352B761B9200530566 /* SnapKit */,
 				B400DB382B761BC000530566 /* Then */,
 				B4F5AFC12B947AC900084050 /* Kingfisher */,
+				4EACAF042BA54E1400BE4109 /* Realm */,
+				4EACAF062BA54E1400BE4109 /* RealmSwift */,
 			);
 			productName = Pokemon;
 			productReference = B400DAF22B76187200530566 /* Pokemon.app */;
@@ -507,6 +516,7 @@
 				B400DB292B761ABE00530566 /* XCRemoteSwiftPackageReference "ReactorKit" */,
 				B400DB372B761BC000530566 /* XCRemoteSwiftPackageReference "Then" */,
 				B4F5AFC02B947AC900084050 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				4EACAF032BA54E1300BE4109 /* XCRemoteSwiftPackageReference "realm-swift" */,
 			);
 			productRefGroup = B400DAF32B76187200530566 /* Products */;
 			projectDirPath = "";
@@ -555,6 +565,7 @@
 				B4401ACA2B8350270064166C /* CardListSection.swift in Sources */,
 				B4FA7D3D2B7E48460058AA93 /* TabBarController.swift in Sources */,
 				B400DAF62B76187200530566 /* AppDelegate.swift in Sources */,
+				4EACAF092BA5513200BE4109 /* RealmPokeonCard.swift in Sources */,
 				4EA179F82B7A1342006A1D51 /* PokemonTarget.swift in Sources */,
 				4EA17A012B7B3584006A1D51 /* CardsRequest.swift in Sources */,
 				B4401AC12B8247DA0064166C /* BaseCollectionViewCell.swift in Sources */,
@@ -915,6 +926,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		4EACAF032BA54E1300BE4109 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-swift.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 		B400DB252B761A3E00530566 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ReactiveX/RxSwift";
@@ -974,6 +993,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		4EACAF042BA54E1400BE4109 /* Realm */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4EACAF032BA54E1300BE4109 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = Realm;
+		};
+		4EACAF062BA54E1400BE4109 /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4EACAF032BA54E1300BE4109 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = RealmSwift;
+		};
 		B400DB2A2B761ABE00530566 /* ReactorKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = B400DB292B761ABE00530566 /* XCRemoteSwiftPackageReference "ReactorKit" */;

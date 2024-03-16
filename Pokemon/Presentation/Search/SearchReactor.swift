@@ -83,7 +83,7 @@ class SearchReactor: Reactor {
         case .scrollTop:
             return .concat([
                 .just(.setScrollTop(true)),
-                .just(.setScrollTop(false))
+//                .just(.setScrollTop(false))
             ])
         }
     }
