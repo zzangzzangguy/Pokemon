@@ -73,6 +73,11 @@ final class SearchViewController: BaseViewController, ReactorKit.View {
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
 
+        scrollToTopButton.rx.tap
+            .map { Reactor.Action.scrollTop }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+
         // State
         reactor.state.map { $0.isLoading }
             .distinctUntilChanged()
@@ -98,6 +103,21 @@ final class SearchViewController: BaseViewController, ReactorKit.View {
                     self?.showNoResultsAlert()
                 }
             })
+            .disposed(by: disposeBag)
+        reactor.state.map { $0.scrollTop }
+            .distinctUntilChanged()
+            .filter{ $0 }
+            .subscribe(onNext: { [weak self] _ in
+                guard let `self` = self else { return }
+
+                self.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+            })
+            .disposed(by: disposeBag)
+
+        tableView.rx.contentOffset
+            .map { $0.y < 100 }
+            .distinctUntilChanged()
+            .bind(to: scrollToTopButton.rx.isHidden)
             .disposed(by: disposeBag)
     }
 

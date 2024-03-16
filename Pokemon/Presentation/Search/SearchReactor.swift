@@ -17,6 +17,7 @@ class SearchReactor: Reactor {
         case updateSearchQuery(String)
         case search(String)
         case loadNextPage
+        case scrollTop
     }
     enum Mutation {
         case setQuery(String)
@@ -25,6 +26,7 @@ class SearchReactor: Reactor {
         case setLoading(Bool)
         case setCanLoadMore(Bool)
         case setNoResults(Bool)
+        case setScrollTop(Bool)
     }
     struct State {
         var query: String = ""
@@ -32,6 +34,7 @@ class SearchReactor: Reactor {
         var isLoading: Bool = false
         var canLoadMore: Bool = true
         var noResults: Bool = false
+        var scrollTop: Bool = false
     }
     func mutate(action: Action) -> Observable<Mutation> {
         switch action {
@@ -77,9 +80,13 @@ class SearchReactor: Reactor {
                 .just(.setLoading(false)),
                 .just(.setCanLoadMore(true))
             ])
+        case .scrollTop:
+            return .concat([
+                .just(.setScrollTop(true)),
+                .just(.setScrollTop(false))
+            ])
         }
     }
-
     func reduce(state: State, mutation: Mutation) -> State {
         var newState = state
 
@@ -101,6 +108,9 @@ class SearchReactor: Reactor {
             newState.canLoadMore = canLoadMore
         case .setNoResults(let noResults):
             newState.noResults = noResults
+
+        case .setScrollTop(let scrollToTop):
+            newState.scrollTop = scrollToTop
 
         }
 
