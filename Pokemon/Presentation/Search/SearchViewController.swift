@@ -119,6 +119,20 @@ final class SearchViewController: BaseViewController, ReactorKit.View {
             .distinctUntilChanged()
             .bind(to: scrollToTopButton.rx.isHidden)
             .disposed(by: disposeBag)
+        
+        tableView.rx.modelSelected(PokemonCard.self)
+            .map { [weak self] card -> (Bool, String) in
+                   guard let self = self else { return (false, "") }
+                   if let cell = self.tableView.cellForRow(at: self.tableView.indexPathForSelectedRow!) as? PokemonCardTableViewCell {
+                       cell.favoriteButton.isSelected.toggle()
+                       return (cell.favoriteButton.isSelected, card.id)
+                   }
+                   return (false, "")
+               }
+               .filter { $0.1 != "" }
+               .map { Reactor.Action.updateFavoriteStatus($0.1, $0.0) }
+               .bind(to: reactor.action)
+               .disposed(by: disposeBag)
     }
 
     // MARK: - Helpers
