@@ -84,6 +84,7 @@ class PokemonCardTableViewCell: UITableViewCell {
         cardImageView.kf.cancelDownloadTask()
         cardImageView.image = nil
         nameLabel.text = nil
+
     }
 
     func configure(with card: PokemonCard) {
@@ -92,11 +93,15 @@ class PokemonCardTableViewCell: UITableViewCell {
         hpLabel.text = card.hp.map { "HP: \($0)" } ?? "HP: -"
         //        favoriteButton.isSelected = card.isFavorite
 
-        let realm = try! Realm()
-        if let realmCard = realm.object(ofType: RealmPokemonCard.self, forPrimaryKey: card.id) {
-            favoriteButton.isSelected = realmCard.isFavorite
-        } else {
-            favoriteButton.isSelected = false
+        do {
+            let realm = try Realm()
+            if let realmCard = realm.object(ofType: RealmPokemonCard.self, forPrimaryKey: card.id) {
+                favoriteButton.isSelected = realmCard.isFavorite
+            } else {
+                favoriteButton.isSelected = false
+            }
+        } catch {
+            print("Realm 에러: \(error)")
         }
 
         print("이미지 URL: \(card.images.small.absoluteString)")
@@ -114,19 +119,23 @@ class PokemonCardTableViewCell: UITableViewCell {
             .subscribe(onNext: { [weak self] in
                 guard let self = self else { return }
 
-                let realm = try! Realm()
-                if let realmCard = realm.object(ofType: RealmPokemonCard.self, forPrimaryKey: card.id) {
-                    try! realm.write {
-                        realmCard.isFavorite.toggle()
+                do {
+                    let realm = try Realm()
+                    if let realmCard = realm.object(ofType: RealmPokemonCard.self, forPrimaryKey: card.id) {
+                        try realm.write {
+                            realmCard.isFavorite.toggle()
+                        }
+                        self.favoriteButton.isSelected = realmCard.isFavorite
+                    } else {
+                        let newRealmCard = RealmPokemonCard(pokemonCard: card)
+                        newRealmCard.isFavorite = true
+                        try realm.write {
+                            realm.add(newRealmCard)
+                        }
+                        self.favoriteButton.isSelected = true
                     }
-                    self.favoriteButton.isSelected = realmCard.isFavorite
-                } else {
-                    let newRealmCard = RealmPokemonCard(pokemonCard: card)
-                    newRealmCard.isFavorite = true
-                    try! realm.write {
-                        realm.add(newRealmCard)
-                    }
-                    self.favoriteButton.isSelected = true
+                } catch {
+                    print("Realm 에러: \(error)")
                 }
             })
             .disposed(by: disposeBag)
