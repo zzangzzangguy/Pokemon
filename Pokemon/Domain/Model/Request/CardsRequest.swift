@@ -11,15 +11,20 @@ struct CardsRequest {
     var query: String?
     var page: Int?
     var pageSize: Int?
+    let rarities: [String]
+
 
     init(
         query: String? = nil,
         page: Int? = 1,
-        pageSize: Int? = 250
+        pageSize: Int? = 250,
+        rarities: [String] = []
+
     ) {
         self.query = query
         self.page = page
         self.pageSize = pageSize
+        self.rarities = rarities
     }
 
     var toDictionary: [String: Any] {

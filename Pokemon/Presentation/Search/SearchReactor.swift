@@ -11,6 +11,8 @@ class SearchReactor: Reactor {
         case scrollTop
         case updateFavoriteStatus(String, Bool)
         case selectItem(PokemonCard)
+        case selectRarity(String)
+
     }
 
     enum Mutation {
@@ -23,6 +25,8 @@ class SearchReactor: Reactor {
         case setScrollTop(Bool)
         case setFavorite(String, Bool)
         case setSelectedItem(PokemonCard?)
+        case setSelectedRarity(String)
+
     }
 
     struct State {
@@ -34,6 +38,8 @@ class SearchReactor: Reactor {
         var scrollTop: Bool = false
         var favorites: [String] = []
         var selectedItem: PokemonCard?
+        var selectedRarity: String = "All"
+
     }
 
     var initialState = State()
@@ -112,6 +118,8 @@ class SearchReactor: Reactor {
             }
         case .selectItem(let card):
             return Observable.just(Mutation.setSelectedItem(card))
+        case .selectRarity(let rarity):
+            return Observable.just(Mutation.setSelectedRarity(rarity))
         }
     }
 
@@ -152,6 +160,8 @@ class SearchReactor: Reactor {
 
         case .setSelectedItem(let item):
             newState.selectedItem = item
+        case .setSelectedRarity(let rarity):
+            newState.selectedRarity = rarity
         }
 
         return newState
@@ -162,7 +172,22 @@ class SearchReactor: Reactor {
 
     private func searchQuery(query: String, page: Int) -> Observable<[PokemonCard]> {
         let pageSize = 20
-        let request = CardsRequest(query: query, page: page, pageSize: pageSize)
+        var rarities: [String] = []
+        switch currentState.selectedRarity {
+        case "Common":
+            rarities = ["Common"]
+        case "Uncommon":
+            rarities = ["Uncommon"]
+        case "Rare":
+            rarities = ["Rare", "Rare Holo", "Rare Prime", "Rare Prism Star"]
+        case "Ultra Rare":
+            rarities = ["Rare Holo EX", "Rare Holo GX", "Rare Holo LV.X", "Rare Holo V", "Rare Holo VMAX", "Rare Rainbow", "Rare Shining"]
+        case "Secret Rare":
+            rarities = ["Rare Secret", "Rare Shiny", "Rare Shiny GX"]
+        default:
+            rarities = []
+        }
+        let request = CardsRequest(query: query, page: page, pageSize: pageSize, rarities: rarities)
 
         return Observable.create { observer in
             self.pokemonRepository.fetchCards(request: request) { result in
@@ -177,18 +202,4 @@ class SearchReactor: Reactor {
             return Disposables.create()
         }
     }
-//    private func updateFavorites(_ favorites: [String], cardID: String, isFavorite: Bool) -> [String] {
-//        var updatedFavorites = favorites
-//
-//        if isFavorite {
-//            if !updatedFavorites.contains(cardID) {
-//                updatedFavorites.append(cardID)
-//            }
-//        } else {
-//            updatedFavorites.removeAll { $0 == cardID }
-//        }
-//
-//        return updatedFavorites
-//    }
 }
-

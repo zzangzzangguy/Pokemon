@@ -15,6 +15,9 @@ import ReactorKit
 
 final class SearchViewController: BaseViewController, ReactorKit.View {
     // MARK: - Properties
+    private let FilterControl = UISegmentedControl(items: ["All", "Common", "Uncommon", "Rare", "Ultra Rare", "Secret Rare"]).then {
+        $0.selectedSegmentIndex = 0
+    }
     private let tableView = UITableView()
     private let searchController = UISearchController(searchResultsController: nil)
     private lazy var loadingIndicator: UIActivityIndicatorView = {
@@ -147,11 +150,15 @@ final class SearchViewController: BaseViewController, ReactorKit.View {
         view.addSubview(tableView)
         view.addSubview(loadingIndicator)
         view.addSubview(scrollToTopButton)
+        view.addSubview(FilterControl)
     }
 
     override func setConstraints() {
         super.setConstraints()
-        tableView.snp.makeConstraints { $0.edges.equalToSuperview() }
+        tableView.snp.makeConstraints {
+            $0.top.equalTo(FilterControl.snp.bottom).offset(8)
+            $0.left.right.bottom.equalToSuperview()
+        }
         loadingIndicator.snp.makeConstraints {
             $0.center.equalToSuperview()
         }
@@ -159,6 +166,10 @@ final class SearchViewController: BaseViewController, ReactorKit.View {
             $0.trailing.equalToSuperview().inset(16)
             $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).inset(16)
             $0.width.height.equalTo(50)
+        }
+        FilterControl.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(8)
+            $0.leading.trailing.equalToSuperview().inset(16)
         }
     }
 
