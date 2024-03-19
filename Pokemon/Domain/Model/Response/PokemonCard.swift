@@ -17,6 +17,8 @@ struct PokemonCard: Codable {
     let hp: String?
     let images: PokemonCardImage
     let types: [String]?
+    let rarity: String? 
+
 //    var isFavorite: Bool = false
 }
 

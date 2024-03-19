@@ -37,6 +37,10 @@ class CardDetailViewController: UIViewController {
         $0.setImage(UIImage(systemName: "star.fill"), for: .selected)
         $0.tintColor = .systemYellow
     }
+    private let rarityLabel = UILabel().then {
+        $0.font = UIFont.systemFont(ofSize: 16)
+        $0.textColor = .darkGray
+    }
 
     init(card: PokemonCard) {
         self.card = card
@@ -61,6 +65,8 @@ class CardDetailViewController: UIViewController {
         view.addSubview(hpLabel)
         view.addSubview(typesLabel)
         view.addSubview(favoriteButton)
+        view.addSubview(rarityLabel)
+
 
         cardImageView.snp.makeConstraints {
             $0.top.leading.equalTo(view.safeAreaLayoutGuide).inset(20)
@@ -87,13 +93,17 @@ class CardDetailViewController: UIViewController {
             $0.trailing.equalTo(view.safeAreaLayoutGuide).inset(20)
             $0.width.height.equalTo(40)
         }
+        rarityLabel.snp.makeConstraints {
+            $0.top.equalTo(hpLabel.snp.bottom).offset(30)
+            $0.leading.equalTo(nameLabel.snp.leading)
+        }
     }
 
     private func bindUI() {
         nameLabel.text = card.name
-        hpLabel.text = card.hp?.uppercased() ?? "HP: -"
+        hpLabel.text = "HP: \(card.hp ?? "-")"
         typesLabel.text = "Types: \(card.types?.joined(separator: ", ") ?? "-")"
-
+        rarityLabel.text = "Rarity: \(card.rarity ?? "-")"
         cardImageView.kf.setImage(with: card.images.large, placeholder: UIImage(named: "placeholder"))
 
         favoriteButton.isSelected = RealmManager.shared.getCard(withId: card.id)?.isFavorite ?? false

@@ -38,7 +38,10 @@ struct CardsRequest {
         if let pageSize = pageSize {
             dictionary["page_size"] = pageSize
         }
-        print("Request Parameters: \(dictionary)") // 로그 출력
+        if !rarities.isEmpty {
+            dictionary["rarities"] = rarities.joined(separator: ",")
+        }
+        print("Request Parameters: \(dictionary)")
         return dictionary
     }
 }

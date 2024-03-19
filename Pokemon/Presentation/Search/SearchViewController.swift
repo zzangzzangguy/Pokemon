@@ -136,6 +136,20 @@ final class SearchViewController: BaseViewController, ReactorKit.View {
                 self?.navigationController?.pushViewController(detailVC, animated: true)
             })
             .disposed(by: disposeBag)
+        FilterControl.rx.selectedSegmentIndex
+               .map { index -> String in
+                   let rarity = self.FilterControl.titleForSegment(at: index) ?? ""
+                   return rarity
+               }
+               .map { Reactor.Action.selectRarity($0) }
+               .bind(to: reactor.action)
+               .disposed(by: disposeBag)
+
+           FilterControl.rx.selectedSegmentIndex
+               .map { _ in self.searchController.searchBar.text ?? "" }
+               .map { Reactor.Action.search($0) }
+               .bind(to: reactor.action)
+               .disposed(by: disposeBag)
     }
 
     // MARK: - Helpers
