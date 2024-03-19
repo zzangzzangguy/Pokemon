@@ -10,8 +10,9 @@ class SearchReactor: Reactor {
         case loadNextPage
         case scrollTop
         case updateFavoriteStatus(String, Bool)
-
+        case selectItem(PokemonCard)
     }
+
     enum Mutation {
         case setQuery(String)
         case setSearchResults([PokemonCard])
@@ -21,8 +22,9 @@ class SearchReactor: Reactor {
         case setNoResults(Bool)
         case setScrollTop(Bool)
         case setFavorite(String, Bool)
-
+        case setSelectedItem(PokemonCard?)
     }
+
     struct State {
         var query: String = ""
         var searchResult: [PokemonCard] = []
@@ -31,22 +33,20 @@ class SearchReactor: Reactor {
         var noResults: Bool = false
         var scrollTop: Bool = false
         var favorites: [String] = []
-
+        var selectedItem: PokemonCard?
     }
+
     var initialState = State()
     private let pokemonRepository: PokemonRepositoryType
-    private var realm: Realm
 
     // MARK: - Initialization
     init(pokemonRepository: PokemonRepositoryType) {
         self.pokemonRepository = pokemonRepository
-        do {
-            self.realm = try Realm()
-        } catch {
-            fatalError("Realm 초기화 실패: \(error)")
-        }
-        self.initialState = State()
+
+        let favoriteCardIDs = RealmManager.shared.getFavoriteCardIDs()
+        initialState = State(favorites: favoriteCardIDs)
     }
+
     func mutate(action: Action) -> Observable<Mutation> {
         switch action {
         case .updateSearchQuery(let query):
@@ -77,6 +77,7 @@ class SearchReactor: Reactor {
                     },
                 .just(.setLoading(false))
             ])
+
         case .loadNextPage:
             guard !currentState.isLoading, currentState.canLoadMore else {
                 return .empty()
@@ -91,37 +92,29 @@ class SearchReactor: Reactor {
                 .just(.setLoading(false)),
                 .just(.setCanLoadMore(true))
             ])
+
         case .scrollTop:
             return .concat([
                 .just(.setScrollTop(true)),
                 .just(.setScrollTop(false))
             ])
+
         case .updateFavoriteStatus(let cardID, let isFavorite):
             return Observable.create { [weak self] observer in
-                   guard let self = self else {
-                       observer.onCompleted()
-                       return Disposables.create()
-                   }
-                   do {
-                       let realm = try Realm()
-                       if let cardToUpdate = realm.object(ofType: RealmPokemonCard.self, forPrimaryKey: cardID) {
-                           try realm.write {
-                               cardToUpdate.isFavorite = isFavorite
-                               realm.add(cardToUpdate, update: .modified)
-                           }
-                           observer.onNext(Mutation.setFavorite(cardID, isFavorite))
-                           observer.onCompleted()
-                       } else {
-                           observer.onError(NSError(domain: "com.example.Pokemon", code: 0, userInfo: [NSLocalizedDescriptionKey: "Card not found"]))
-                       }
-                   } catch {
-                       observer.onError(error)
-                   }
-                   return Disposables.create()
-               }
-
+                guard let self = self else {
+                    observer.onCompleted()
+                    return Disposables.create()
+                }
+                RealmManager.shared.updateFavorite(for: cardID, isFavorite: isFavorite)
+                observer.onNext(Mutation.setFavorite(cardID, isFavorite))
+                observer.onCompleted()
+                return Disposables.create()
+            }
+        case .selectItem(let card):
+            return Observable.just(Mutation.setSelectedItem(card))
         }
     }
+
     func reduce(state: State, mutation: Mutation) -> State {
         var newState = state
 
@@ -141,6 +134,7 @@ class SearchReactor: Reactor {
 
         case .setCanLoadMore(let canLoadMore):
             newState.canLoadMore = canLoadMore
+
         case .setNoResults(let noResults):
             newState.noResults = noResults
 
@@ -155,10 +149,16 @@ class SearchReactor: Reactor {
                     newState.favorites.remove(at: index)
                 }
             }
+
+        case .setSelectedItem(let item):
+            newState.selectedItem = item
         }
 
         return newState
     }
+
+
+
 
     private func searchQuery(query: String, page: Int) -> Observable<[PokemonCard]> {
         let pageSize = 20
@@ -177,18 +177,18 @@ class SearchReactor: Reactor {
             return Disposables.create()
         }
     }
-    private func updateFavorites(_ favorites: [String], cardID: String, isFavorite: Bool) -> [String] {
-        var updatedFavorites = favorites
-
-        if isFavorite {
-            if !updatedFavorites.contains(cardID) {
-                updatedFavorites.append(cardID)
-            }
-        } else {
-            updatedFavorites.removeAll { $0 == cardID }
-        }
-
-        return updatedFavorites
-    }
+//    private func updateFavorites(_ favorites: [String], cardID: String, isFavorite: Bool) -> [String] {
+//        var updatedFavorites = favorites
+//
+//        if isFavorite {
+//            if !updatedFavorites.contains(cardID) {
+//                updatedFavorites.append(cardID)
+//            }
+//        } else {
+//            updatedFavorites.removeAll { $0 == cardID }
+//        }
+//
+//        return updatedFavorites
+//    }
 }
 

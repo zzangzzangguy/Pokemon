@@ -12,4 +12,5 @@ protocol PokemonRepositoryType {
         request: CardsRequest,
         completion: @escaping (Result<PokemonCards, Error>) -> Void
     )
+    
 }

@@ -37,7 +37,6 @@ final class CardListCollectionViewCell: BaseCollectionViewCell<PokemonCard> {
         contentView.addSubview(imageView)
         contentView.addSubview(hpTextLabel)
         contentView.addSubview(nameLabel)
-        contentView.addSubview(favoriteButton)
     }
 
     override func setConstraints() {
@@ -54,11 +53,11 @@ final class CardListCollectionViewCell: BaseCollectionViewCell<PokemonCard> {
             $0.leading.trailing.equalToSuperview().inset(8)
             $0.bottom.equalToSuperview()
         }
-        favoriteButton.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(10)
-            $0.right.equalToSuperview().inset(10)
-            $0.width.height.equalTo(30)
-        }
+//        favoriteButton.snp.makeConstraints {
+//            $0.top.equalToSuperview().offset(10)
+//            $0.right.equalToSuperview().inset(10)
+//            $0.width.height.equalTo(30)
+//        }
     }
 
 override func bind(_ model: PokemonCard?) {

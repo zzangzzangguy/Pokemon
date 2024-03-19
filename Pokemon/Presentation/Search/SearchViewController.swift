@@ -5,6 +5,7 @@
 //  Created by 강호성 on 2/15/24.
 //
 
+// SearchViewController.swift
 import UIKit
 import SnapKit
 import RxSwift
@@ -90,8 +91,14 @@ final class SearchViewController: BaseViewController, ReactorKit.View {
             .disposed(by: disposeBag)
 
         reactor.state.map { $0.searchResult }
-            .bind(to: tableView.rx.items(cellIdentifier: PokemonCardTableViewCell.reuseIdentifier, cellType: PokemonCardTableViewCell.self)) { _, item, cell in
-                cell.configure(with: item)
+            .bind(to: tableView.rx.items(cellIdentifier: PokemonCardTableViewCell.reuseIdentifier, cellType: PokemonCardTableViewCell.self)) { [weak self] index, item, cell in
+                guard let self = self else { return }
+                let isFavorite = self.reactor?.currentState.favorites.contains(item.id) ?? false
+                cell.configure(with: item, isFavorite: isFavorite)
+                cell.favoriteButtonTapped
+                    .map { Reactor.Action.updateFavoriteStatus(item.id, $0) }
+                    .bind(to: self.reactor!.action)
+                    .disposed(by: cell.disposeBag)
             }
             .disposed(by: disposeBag)
 
@@ -104,12 +111,12 @@ final class SearchViewController: BaseViewController, ReactorKit.View {
                 }
             })
             .disposed(by: disposeBag)
+
         reactor.state.map { $0.scrollTop }
             .distinctUntilChanged()
-            .filter{ $0 }
+            .filter { $0 }
             .subscribe(onNext: { [weak self] _ in
-                guard let `self` = self else { return }
-
+                guard let self = self else { return }
                 self.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
             })
             .disposed(by: disposeBag)
@@ -119,20 +126,13 @@ final class SearchViewController: BaseViewController, ReactorKit.View {
             .distinctUntilChanged()
             .bind(to: scrollToTopButton.rx.isHidden)
             .disposed(by: disposeBag)
-        
+
         tableView.rx.modelSelected(PokemonCard.self)
-            .map { [weak self] card -> (Bool, String) in
-                   guard let self = self else { return (false, "") }
-                   if let cell = self.tableView.cellForRow(at: self.tableView.indexPathForSelectedRow!) as? PokemonCardTableViewCell {
-                       cell.favoriteButton.isSelected.toggle()
-                       return (cell.favoriteButton.isSelected, card.id)
-                   }
-                   return (false, "")
-               }
-               .filter { $0.1 != "" }
-               .map { Reactor.Action.updateFavoriteStatus($0.1, $0.0) }
-               .bind(to: reactor.action)
-               .disposed(by: disposeBag)
+            .subscribe(onNext: { [weak self] card in
+                let detailVC = CardDetailViewController(card: card)
+                self?.navigationController?.pushViewController(detailVC, animated: true)
+            })
+            .disposed(by: disposeBag)
     }
 
     // MARK: - Helpers
@@ -147,7 +147,6 @@ final class SearchViewController: BaseViewController, ReactorKit.View {
         view.addSubview(tableView)
         view.addSubview(loadingIndicator)
         view.addSubview(scrollToTopButton)
-
     }
 
     override func setConstraints() {

@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		4E4895312B85F41100503703 /* SearchReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E4895302B85F41100503703 /* SearchReactor.swift */; };
 		4E4895362B8A06DA00503703 /* PokemonCardTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E4895352B8A06DA00503703 /* PokemonCardTableViewCell.swift */; };
+		4E8F08932BA83ABE00DF11B2 /* RealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E8F08922BA83ABE00DF11B2 /* RealmManager.swift */; };
+		4E8F08952BA844E800DF11B2 /* RealmPokemonRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E8F08942BA844E800DF11B2 /* RealmPokemonRepository.swift */; };
+		4E8F08972BA858A900DF11B2 /* CardDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E8F08962BA858A900DF11B2 /* CardDetailViewController.swift */; };
 		4EA179F02B7A11BA006A1D51 /* Secrets.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 4EA179EF2B7A11BA006A1D51 /* Secrets.xcconfig */; };
 		4EA179F52B7A12DB006A1D51 /* PokemonCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA179F42B7A12DB006A1D51 /* PokemonCard.swift */; };
 		4EA179F82B7A1342006A1D51 /* PokemonTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA179F72B7A1342006A1D51 /* PokemonTarget.swift */; };
@@ -68,6 +71,9 @@
 /* Begin PBXFileReference section */
 		4E4895302B85F41100503703 /* SearchReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchReactor.swift; sourceTree = "<group>"; };
 		4E4895352B8A06DA00503703 /* PokemonCardTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonCardTableViewCell.swift; sourceTree = "<group>"; };
+		4E8F08922BA83ABE00DF11B2 /* RealmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmManager.swift; sourceTree = "<group>"; };
+		4E8F08942BA844E800DF11B2 /* RealmPokemonRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmPokemonRepository.swift; sourceTree = "<group>"; };
+		4E8F08962BA858A900DF11B2 /* CardDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDetailViewController.swift; sourceTree = "<group>"; };
 		4EA179EF2B7A11BA006A1D51 /* Secrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig; sourceTree = "<group>"; };
 		4EA179F42B7A12DB006A1D51 /* PokemonCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonCard.swift; sourceTree = "<group>"; };
 		4EA179F72B7A1342006A1D51 /* PokemonTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonTarget.swift; sourceTree = "<group>"; };
@@ -274,6 +280,7 @@
 			isa = PBXGroup;
 			children = (
 				4EA179FA2B7A1372006A1D51 /* PokemonRepositoryType.swift */,
+				4E8F08942BA844E800DF11B2 /* RealmPokemonRepository.swift */,
 			);
 			path = Interface;
 			sourceTree = "<group>";
@@ -375,8 +382,10 @@
 			isa = PBXGroup;
 			children = (
 				4E4895352B8A06DA00503703 /* PokemonCardTableViewCell.swift */,
+				4E8F08962BA858A900DF11B2 /* CardDetailViewController.swift */,
 				B4FA7D3A2B7E47640058AA93 /* SearchViewController.swift */,
 				4E4895302B85F41100503703 /* SearchReactor.swift */,
+				4E8F08922BA83ABE00DF11B2 /* RealmManager.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -574,10 +583,13 @@
 				B4FA7D382B7E47550058AA93 /* CardListViewController.swift in Sources */,
 				B4401ACE2B8361B40064166C /* UIViewController+Rx.swift in Sources */,
 				B4FA7D3B2B7E47640058AA93 /* SearchViewController.swift in Sources */,
+				4E8F08972BA858A900DF11B2 /* CardDetailViewController.swift in Sources */,
 				4E4895312B85F41100503703 /* SearchReactor.swift in Sources */,
 				4E4895362B8A06DA00503703 /* PokemonCardTableViewCell.swift in Sources */,
 				B4FA7D352B7E470D0058AA93 /* BaseViewController.swift in Sources */,
+				4E8F08952BA844E800DF11B2 /* RealmPokemonRepository.swift in Sources */,
 				B4401ABF2B8247C60064166C /* CardListCollectionViewCell.swift in Sources */,
+				4E8F08932BA83ABE00DF11B2 /* RealmManager.swift in Sources */,
 				4EA179F52B7A12DB006A1D51 /* PokemonCard.swift in Sources */,
 				B4401AC62B82486B0064166C /* BaseTableViewCell.swift in Sources */,
 				4EA179FB2B7A1372006A1D51 /* PokemonRepositoryType.swift in Sources */,
