@@ -15,7 +15,7 @@ import ReactorKit
 
 final class SearchViewController: BaseViewController, ReactorKit.View {
     // MARK: - Properties
-    private let FilterControl = UISegmentedControl(items: ["All", "Common", "Uncommon", "Rare", "Ultra Rare", "Secret Rare"]).then {
+    private let FilterControl = UISegmentedControl(items: ["All", "Common", "Uncommon", "Rare"]).then {
         $0.selectedSegmentIndex = 0
     }
     private let tableView = UITableView()
