@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import RxSwift
 import RxCocoa
-import RxDataSources
+//import RxDataSources
 import ReactorKit
 
 final class SearchViewController: BaseViewController, ReactorKit.View {
@@ -137,19 +137,19 @@ final class SearchViewController: BaseViewController, ReactorKit.View {
             })
             .disposed(by: disposeBag)
         FilterControl.rx.selectedSegmentIndex
-               .map { index -> String in
-                   let rarity = self.FilterControl.titleForSegment(at: index) ?? ""
-                   return rarity
-               }
-               .map { Reactor.Action.selectRarity($0) }
-               .bind(to: reactor.action)
-               .disposed(by: disposeBag)
-
-           FilterControl.rx.selectedSegmentIndex
-               .map { _ in self.searchController.searchBar.text ?? "" }
-               .map { Reactor.Action.search($0) }
-               .bind(to: reactor.action)
-               .disposed(by: disposeBag)
+            .map { index -> String in
+                let rarity = self.FilterControl.titleForSegment(at: index) ?? ""
+                print("등급: \(rarity)")
+                return rarity
+            }
+            .distinctUntilChanged()
+            .flatMapLatest { rarity -> Observable<Reactor.Action> in
+                let selectRarityAction = Observable.just(Reactor.Action.selectRarity(rarity))
+                let searchAction = Observable.just(Reactor.Action.search(self.searchController.searchBar.text ?? ""))
+                return Observable.concat([selectRarityAction, searchAction])
+            }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
     }
 
     // MARK: - Helpers

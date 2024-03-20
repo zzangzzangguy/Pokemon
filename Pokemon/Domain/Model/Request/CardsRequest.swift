@@ -11,36 +11,45 @@ struct CardsRequest {
     var query: String?
     var page: Int?
     var pageSize: Int?
-    let rarities: [String]
-
+    var rarity: String?
 
     init(
         query: String? = nil,
         page: Int? = 1,
         pageSize: Int? = 250,
-        rarities: [String] = []
-
+        rarity: String? = nil
     ) {
         self.query = query
         self.page = page
         self.pageSize = pageSize
-        self.rarities = rarities
+        self.rarity = rarity
     }
 
     var toDictionary: [String: Any] {
         var dictionary: [String: Any] = [:]
+
+        var queryItems: [String] = []
+
         if let query = query {
-            dictionary["q"] = "name:\(query)*"
+            queryItems.append("name:\(query)*")
         }
+
+        if let rarity = rarity {
+            queryItems.append("rarity:\(rarity)")
+        }
+
+        if !queryItems.isEmpty {
+            dictionary["q"] = queryItems.joined(separator: " ")
+        }
+
         if let page = page {
             dictionary["page"] = page
         }
+
         if let pageSize = pageSize {
             dictionary["page_size"] = pageSize
         }
-        if !rarities.isEmpty {
-            dictionary["rarities"] = rarities.joined(separator: ",")
-        }
+
         print("Request Parameters: \(dictionary)")
         return dictionary
     }

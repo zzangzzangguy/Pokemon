@@ -71,9 +71,11 @@ class SearchReactor: Reactor {
             }
 
             let initialPage = 1
+            let currentRarity = currentState.selectedRarity
             return .concat([
                 .just(.setLoading(true)),
-                searchQuery(query: query, page: initialPage)
+                .just(.setNoResults(false)),
+                searchQuery(query: query, page: initialPage, rarity: currentState.selectedRarity)
                     .map { results in
                         if results.isEmpty {
                             return .setNoResults(true)
@@ -93,7 +95,7 @@ class SearchReactor: Reactor {
 
             return .concat([
                 .just(.setLoading(true)),
-                searchQuery(query: currentState.query, page: nextPage)
+                searchQuery(query: currentState.query, page: nextPage, rarity: currentState.selectedRarity)
                     .map { .appendSearchResults($0) },
                 .just(.setLoading(false)),
                 .just(.setCanLoadMore(true))
@@ -119,7 +121,11 @@ class SearchReactor: Reactor {
         case .selectItem(let card):
             return Observable.just(Mutation.setSelectedItem(card))
         case .selectRarity(let rarity):
-            return Observable.just(Mutation.setSelectedRarity(rarity))
+            return Observable.concat([
+                .just(Mutation.setSelectedRarity(rarity)),
+                searchQuery(query: currentState.query, page: 1, rarity: rarity)
+                    .map(Mutation.setSearchResults) 
+            ])
         }
     }
 
@@ -170,36 +176,38 @@ class SearchReactor: Reactor {
 
 
 
-    private func searchQuery(query: String, page: Int) -> Observable<[PokemonCard]> {
+    private func searchQuery(query: String, page: Int, rarity: String) -> Observable<[PokemonCard]> {
         let pageSize = 20
-        var rarities: [String] = []
-        switch currentState.selectedRarity {
-        case "Common":
-            rarities = ["Common"]
-        case "Uncommon":
-            rarities = ["Uncommon"]
-        case "Rare":
-            rarities = ["Rare", "Rare Holo", "Rare Prime", "Rare Prism Star"]
-        case "Ultra Rare":
-            rarities = ["Rare Holo EX", "Rare Holo GX", "Rare Holo LV.X", "Rare Holo V", "Rare Holo VMAX", "Rare Rainbow", "Rare Shining"]
-        case "Secret Rare":
-            rarities = ["Rare Secret", "Rare Shiny", "Rare Shiny GX"]
-        default:
-            rarities = []
-        }
-        let request = CardsRequest(query: query, page: page, pageSize: pageSize, rarities: rarities)
+        let request = CardsRequest(query: query, page: page, pageSize: pageSize, rarity: rarity) // 변경
 
         return Observable.create { observer in
             self.pokemonRepository.fetchCards(request: request) { result in
                 switch result {
                 case .success(let response):
                     observer.onNext(response.data)
+                    print("ㅇㅇ\(response.data)")
                 case .failure:
                     observer.onNext([])
                 }
                 observer.onCompleted()
             }
             return Disposables.create()
+        }
+    }
+    private func filterRarities(_ selectedRarity: String) -> [String] {
+        switch selectedRarity {
+        case "Common":
+            return ["Common"]
+        case "Uncommon":
+            return ["Uncommon"]
+        case "Rare":
+            return ["Rare", "Rare Holo", "Rare Prime", "Rare Prism Star"]
+        case "Ultra Rare":
+            return ["Rare Holo EX", "Rare Holo GX", "Rare Holo LV.X", "Rare Holo V", "Rare Holo VMAX", "Rare Rainbow", "Rare Shining"]
+        case "Secret Rare":
+            return ["Rare Secret", "Rare Shiny", "Rare Shiny GX"]
+        default:
+            return []
         }
     }
 }

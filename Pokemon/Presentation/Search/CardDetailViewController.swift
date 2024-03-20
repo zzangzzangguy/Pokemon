@@ -102,8 +102,8 @@ class CardDetailViewController: UIViewController {
     private func bindUI() {
         nameLabel.text = card.name
         hpLabel.text = "HP: \(card.hp ?? "-")"
-        typesLabel.text = "Types: \(card.types?.joined(separator: ", ") ?? "-")"
-        rarityLabel.text = "Rarity: \(card.rarity ?? "-")"
+        typesLabel.text = "타입: \(card.types?.joined(separator: ", ") ?? "-")"
+        rarityLabel.text = "등급: \(card.rarity ?? "-")"
         cardImageView.kf.setImage(with: card.images.large, placeholder: UIImage(named: "placeholder"))
 
         favoriteButton.isSelected = RealmManager.shared.getCard(withId: card.id)?.isFavorite ?? false
