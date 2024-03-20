@@ -12,7 +12,6 @@ class SearchReactor: Reactor {
         case updateFavoriteStatus(String, Bool)
         case selectItem(PokemonCard)
         case selectRarity(String)
-
     }
 
     enum Mutation {
@@ -28,7 +27,6 @@ class SearchReactor: Reactor {
         case setSelectedRarity(String)
         case setError(Error?)
         case setPage(Int)
-
     }
 
     struct State {
@@ -44,7 +42,6 @@ class SearchReactor: Reactor {
         var page: Int = 1
         var pageSize: Int = 20
         var error: Error?
-
     }
 
     var initialState = State()
@@ -67,29 +64,45 @@ class SearchReactor: Reactor {
             ])
 
         case .search(let query):
-            guard !query.isEmpty else {
+            let initialPage = 1
+
+            if currentState.selectedRarity == "All" {
+                return .concat([
+                    .just(.setLoading(true)),
+                    .just(.setNoResults(false)),
+                    searchQuery(query: query, page: initialPage, rarity: nil)
+                        .map { results in
+                            if results.isEmpty {
+                                return .setNoResults(true)
+                            } else {
+                                return .setSearchResults(results)
+                            }
+                        }
+                        .catch { .just(.setError($0)) },
+                    .just(.setLoading(false))
+                ])
+            } else if query.isEmpty {
                 return .concat([
                     .just(.setLoading(false)),
                     .just(.setSearchResults([])),
                     .just(.setNoResults(true))
                 ])
-            }
-
-            let initialPage = 1
-            let currentRarity = currentState.selectedRarity
-            return .concat([
-                .just(.setLoading(true)),
-                .just(.setNoResults(false)),
-                searchQuery(query: query, page: initialPage, rarity: currentState.selectedRarity)
-                    .map { results in
-                        if results.isEmpty {
-                            return .setNoResults(true)
-                        } else {
-                            return .setSearchResults(results)
+            } else {
+                return .concat([
+                    .just(.setLoading(true)),
+                    .just(.setNoResults(false)),
+                    searchQuery(query: query, page: initialPage, rarity: currentState.selectedRarity)
+                        .map { results in
+                            if results.isEmpty {
+                                return .setNoResults(true)
+                            } else {
+                                return .setSearchResults(results)
+                            }
                         }
-                    },
-                .just(.setLoading(false))
-            ])
+                        .catch { .just(.setError($0)) },
+                    .just(.setLoading(false))
+                ])
+            }
 
         case .loadNextPage:
             guard !currentState.isLoading, currentState.canLoadMore else {
@@ -183,9 +196,9 @@ class SearchReactor: Reactor {
         return newState
     }
 
-    private func searchQuery(query: String, page: Int, rarity: String) -> Observable<[PokemonCard]> {
+    private func searchQuery(query: String, page: Int, rarity: String?) -> Observable<[PokemonCard]> {
         let pageSize = 20
-        let request = CardsRequest(query: query, page: page, pageSize: pageSize, rarity: rarity) 
+        let request = CardsRequest(query: query, page: page, pageSize: pageSize, rarity: rarity)
 
         return Observable.create { observer in
             self.pokemonRepository.fetchCards(request: request) { result in
@@ -199,22 +212,6 @@ class SearchReactor: Reactor {
                 observer.onCompleted()
             }
             return Disposables.create()
-        }
-    }
-    private func filterRarities(_ selectedRarity: String) -> [String] {
-        switch selectedRarity {
-        case "Common":
-            return ["Common"]
-        case "Uncommon":
-            return ["Uncommon"]
-        case "Rare":
-            return ["Rare", "Rare Holo", "Rare Prime", "Rare Prism Star","Rare Holo EX", "Rare Holo GX", "Rare Holo LV.X", "Rare Holo V", "Rare Holo VMAX", "Rare Rainbow", "Rare Shining","Rare Secret", "Rare Shiny", "Rare Shiny GX"]
-            //        case "Ultra Rare":
-            //            return ["Rare Holo EX", "Rare Holo GX", "Rare Holo LV.X", "Rare Holo V", "Rare Holo VMAX", "Rare Rainbow", "Rare Shining"]
-            //        case "Secret Rare":
-            //            return ["Rare Secret", "Rare Shiny", "Rare Shiny GX"]
-        default:
-            return []
         }
     }
 }
