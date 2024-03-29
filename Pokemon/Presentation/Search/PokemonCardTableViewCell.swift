@@ -16,7 +16,7 @@ import RealmSwift
 
 class PokemonCardTableViewCell: UITableViewCell {
 
-    var disposeBag = DisposeBag()
+    lazy var disposeBag = DisposeBag()
     var favoriteButtonTapped = PublishSubject<Bool>()
     private var cardInfo: PokemonCard?
 
@@ -89,43 +89,32 @@ class PokemonCardTableViewCell: UITableViewCell {
         hpLabel.text = nil
         favoriteButton.isSelected = false
     }
-
     func configure(with card: PokemonCard, isFavorite: Bool) {
         cardInfo = card
         nameLabel.text = card.name
         hpLabel.text = card.hp.map { "HP: \($0)" } ?? "HP: -"
         favoriteButton.isSelected = isFavorite
+//        print("Configuring cell with card: \(card.name), HP: \(card.hp ?? "-"), isFavorite: \(isFavorite)")
 
-        //
-        //        do {
-        //            let realm = try Realm()
-        //            if let realmCard = realm.object(ofType: RealmPokemonCard.self, forPrimaryKey: card.id) {
-        //                favoriteButton.isSelected = realmCard.isFavorite
-        //            } else {
-        //                favoriteButton.isSelected = false
-        //            }
-        //        } catch {
-        //            print("Realm 에러: \(error)")
-        //        }
 
-        print("이미지 URL: \(card.images.small.absoluteString)")
-        cardImageView.kf.setImage(with: card.images.small, placeholder: UIImage(named: "placeholder"), options: [.transition(.fade(1))], completionHandler:  { result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let value):
-                    print("이미지 로드 성공: \(value.source.url?.absoluteString ?? "")")
-                case .failure(let error):
-                    print("이미지 로드 실패: \(error.localizedDescription)")
-                }
+        let options: KingfisherOptionsInfo = [
+            .transition(.fade(1)),
+            .cacheOriginalImage
+        ]
+        cardImageView.kf.setImage(with: card.images.small, placeholder: UIImage(named: "placeholder"), options: options, completionHandler: { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let value):
+                self.cardImageView.image = value.image
+            case .failure:
+                self.cardImageView.image = UIImage(named: "placeholder")
             }
         })
 
+
         favoriteButton.rx.tap
-            .subscribe(onNext: { [weak self] _ in
-                guard let strongSelf = self else { return }
-                let newState = !strongSelf.favoriteButton.isSelected
-                strongSelf.favoriteButton.isSelected = newState
-                RealmManager.shared.updateFavorite(for: strongSelf.cardInfo?.id ?? "", isFavorite: newState)
-            }).disposed(by: disposeBag)
+            .map { _ in !isFavorite }
+            .bind(to: favoriteButtonTapped)
+            .disposed(by: disposeBag)
     }
 }

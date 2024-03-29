@@ -15,6 +15,8 @@ class RealmPokemonCard: Object {
     @Persisted var smallImageURL: String
     @Persisted var largeImageURL: String
     @Persisted var isFavorite: Bool = false
+    @Persisted var types: List<String>
+    @Persisted var rarity: String? 
 
     convenience init(pokemonCard: PokemonCard) {
         self.init()
@@ -23,9 +25,24 @@ class RealmPokemonCard: Object {
         self.hp = pokemonCard.hp
         self.smallImageURL = pokemonCard.images.small.absoluteString
         self.largeImageURL = pokemonCard.images.large.absoluteString
+
+        if let types = pokemonCard.types {
+            self.types.append(objectsIn: types)
+        }
+        self.rarity = pokemonCard.rarity
     }
 
     var images: PokemonCardImage {
-        return PokemonCardImage(small: URL(string: smallImageURL)!, large: URL(string: largeImageURL)!)
+        let smallURL = URL(string: smallImageURL) ?? URL(string: "https://example.com/placeholder.png")!
+        let largeURL = URL(string: largeImageURL) ?? URL(string: "https://example.com/placeholder.png")!
+        return PokemonCardImage(small: smallURL, large: largeURL)
+    }
+
+    func toPokemonCard() -> PokemonCard {
+        let hp = self.hp
+        let types = Array(self.types)
+        let rarity = self.rarity
+
+        return PokemonCard(id: id, name: name, hp: hp, images: images, types: types, rarity: rarity)
     }
 }

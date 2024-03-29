@@ -10,7 +10,7 @@ import Foundation
 import Moya
 
 final class PokemonRepository: PokemonRepositoryType {
-    private let provider: MoyaProvider<PokemonTarget>
+    private var provider: MoyaProvider<PokemonTarget>
     init() { provider = MoyaProvider<PokemonTarget>() }
 }
 

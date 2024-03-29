@@ -40,7 +40,14 @@ final class TabBarController: UITabBarController {
             )
         )
 
-        viewControllers = [cardList, search]
+        let favorites = templateTabBarController(
+            unselectedImage:  UIImage(systemName: "star")!,
+            selectedImage: UIImage(systemName: "star.fill")!,
+            rootViewController: FavoriteViewController(
+                reactor: FavoriteReactor()
+                )
+            )
+        viewControllers = [cardList, search, favorites]
     }
 
     private func templateTabBarController(
