@@ -72,17 +72,18 @@ class FavoriteViewController: BaseViewController, ReactorKit.View {
                     .map { $0.toPokemonCard() }
             }
             .distinctUntilChanged()
-            .bind(to: tableView.rx.items(cellIdentifier: PokemonCardTableViewCell.reuseIdentifier, cellType: PokemonCardTableViewCell.self)) { index, card, cell in
-                cell.configure(with: card, isFavorite: true)
+            .bind(to: tableView.rx.items(cellIdentifier: PokemonCardTableViewCell.reuseIdentifier, cellType: PokemonCardTableViewCell.self)) { [weak self] index, card, cell in
+                guard let self = self else { return }
+                let isFavorite = self.reactor?.currentState.favoriteCards.contains { $0.id == card.id } ?? false
+                cell.configure(with: card, isFavorite: isFavorite)
 
-                cell.favoriteButton.rx.tap
-                    .map { Reactor.Action.toggleFavorite(card.id, !isFavorite) }
+                cell.favoriteButtonTapped
+                    .map { Reactor.Action.toggleFavorite(card.id, $0) }
                     .bind(to: self.reactor!.action)
                     .disposed(by: cell.disposeBag)
-
             }
             .disposed(by: disposeBag)
-        
+
 
         reactor.state
             .map { $0.selectedRarity }
@@ -95,6 +96,6 @@ class FavoriteViewController: BaseViewController, ReactorKit.View {
             .subscribe(onNext: { [weak self] _ in self?.reactor?.action.onNext(.loadFavorites) })
             .disposed(by: disposeBag)
 
-
+        
     }
 }

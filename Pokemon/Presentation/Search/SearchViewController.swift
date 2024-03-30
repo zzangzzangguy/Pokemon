@@ -126,6 +126,9 @@ final class SearchViewController: BaseViewController, ReactorKit.View {
         reactor.state
             .map { $0.noResults }
             .distinctUntilChanged()
+            .observe(on: MainScheduler.instance)
+        
+            .filter { $0 == true }
             .bind(onNext: { [weak self] noResults in
                 if noResults {
                     self?.searchController.searchBar.resignFirstResponder()

@@ -6,6 +6,7 @@
 //
 
 // PokemonCardTableViewCell.swift
+// PokemonCardTableViewCell.swift
 import UIKit
 import Kingfisher
 import Then
@@ -15,7 +16,6 @@ import RxCocoa
 import RealmSwift
 
 class PokemonCardTableViewCell: UITableViewCell {
-
     lazy var disposeBag = DisposeBag()
     var favoriteButtonTapped = PublishSubject<Bool>()
     private var cardInfo: PokemonCard?
@@ -52,12 +52,11 @@ class PokemonCardTableViewCell: UITableViewCell {
     }
 
     private func setupView() {
-        self.contentView.addSubview(cardImageView)
-        self.contentView.addSubview(nameLabel)
-        self.contentView.addSubview(hpLabel)
+        contentView.addSubview(cardImageView)
+        contentView.addSubview(nameLabel)
+        contentView.addSubview(hpLabel)
         contentView.addSubview(favoriteButton)
     }
-
 
     private func setupLayout() {
         cardImageView.snp.makeConstraints {
@@ -69,10 +68,12 @@ class PokemonCardTableViewCell: UITableViewCell {
             $0.leading.equalTo(cardImageView.snp.trailing).offset(10)
             $0.trailing.equalToSuperview().inset(10)
         }
+
         hpLabel.snp.makeConstraints {
             $0.top.equalTo(nameLabel.snp.bottom).offset(4)
             $0.leading.equalTo(nameLabel.snp.leading)
         }
+
         favoriteButton.snp.makeConstraints {
             $0.top.equalToSuperview().offset(10)
             $0.trailing.equalToSuperview().inset(10)
@@ -89,18 +90,19 @@ class PokemonCardTableViewCell: UITableViewCell {
         hpLabel.text = nil
         favoriteButton.isSelected = false
     }
+
     func configure(with card: PokemonCard, isFavorite: Bool) {
         cardInfo = card
         nameLabel.text = card.name
         hpLabel.text = card.hp.map { "HP: \($0)" } ?? "HP: -"
         favoriteButton.isSelected = isFavorite
-//        print("Configuring cell with card: \(card.name), HP: \(card.hp ?? "-"), isFavorite: \(isFavorite)")
-
+        animateFavoriteButton(isSelected: isFavorite)
 
         let options: KingfisherOptionsInfo = [
             .transition(.fade(1)),
             .cacheOriginalImage
         ]
+
         cardImageView.kf.setImage(with: card.images.small, placeholder: UIImage(named: "placeholder"), options: options, completionHandler: { [weak self] result in
             guard let self = self else { return }
             switch result {
@@ -111,10 +113,27 @@ class PokemonCardTableViewCell: UITableViewCell {
             }
         })
 
-
         favoriteButton.rx.tap
-            .map { _ in !isFavorite }
-            .bind(to: favoriteButtonTapped)
+            .map { !isFavorite }
+            .subscribe(onNext: { [weak self] isSelected in
+                guard let self = self else { return }
+                self.animateFavoriteButton(isSelected: isSelected)
+                self.favoriteButtonTapped.onNext(isSelected)
+            })
             .disposed(by: disposeBag)
+    }
+
+    private func animateFavoriteButton(isSelected: Bool) {
+        UIView.animate(withDuration: 0.2, animations: {
+            if isSelected {
+                self.favoriteButton.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+            } else {
+                self.favoriteButton.transform = CGAffineTransform.identity
+            }
+        }, completion: { _ in
+            UIView.animate(withDuration: 0.1) {
+                self.favoriteButton.transform = isSelected ? .identity : CGAffineTransform(scaleX: 0.8, y: 0.8)
+            }
+        })
     }
 }
