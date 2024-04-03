@@ -236,7 +236,7 @@ class SearchReactor: Reactor {
         var request = CardsRequest(query: query, page: page, pageSize: currentState.pageSize, rarity: rarity)
 
         if let query = query {
-            request.select = "id,name,images,hp,type,rarity"
+            request.select = "id,name,images,hp,types,rarity"
         }
 
         return Observable.create { observer in

@@ -17,42 +17,42 @@ class FavoriteViewController: BaseViewController, ReactorKit.View {
     let filterControl = UISegmentedControl(items: ["All", "Common", "Uncommon", "Rare"]).then {
         $0.selectedSegmentIndex = 0
     }
-
+    
     let tableView = UITableView().then {
         $0.register(PokemonCardTableViewCell.self, forCellReuseIdentifier: "PokemonCardTableViewCell")
         $0.rowHeight = 180
     }
-
+    
     required init(reactor: FavoriteReactor) {
         super.init()
         self.reactor = reactor
     }
-
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
         reactor?.action.onNext(.loadFavorites)
     }
-
+    
     private func setupUI() {
         view.addSubview(filterControl)
         view.addSubview(tableView)
-
+        
         filterControl.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(8)
             $0.leading.trailing.equalToSuperview().inset(16)
         }
-
+        
         tableView.snp.makeConstraints {
             $0.top.equalTo(filterControl.snp.bottom).offset(8)
             $0.leading.trailing.bottom.equalToSuperview()
         }
     }
-
+    
     func bind(reactor: FavoriteReactor) {
         filterControl.rx.selectedSegmentIndex
             .map { index -> String in
@@ -63,7 +63,7 @@ class FavoriteViewController: BaseViewController, ReactorKit.View {
             .map(Reactor.Action.filterFavorites)
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
-
+        
         reactor.state
             .map { state -> [PokemonCard] in
                 let selectedRarity = state.selectedRarity
@@ -76,26 +76,26 @@ class FavoriteViewController: BaseViewController, ReactorKit.View {
                 guard let self = self else { return }
                 let isFavorite = self.reactor?.currentState.favoriteCards.contains { $0.id == card.id } ?? false
                 cell.configure(with: card, isFavorite: isFavorite)
-
+                
                 cell.favoriteButtonTapped
                     .map { Reactor.Action.toggleFavorite(card.id, $0) }
                     .bind(to: self.reactor!.action)
                     .disposed(by: cell.disposeBag)
             }
             .disposed(by: disposeBag)
-
-
+        
+        
         reactor.state
             .map { $0.selectedRarity }
             .distinctUntilChanged()
             .subscribe(onNext: { [weak tableView] _ in tableView?.reloadData() })
             .disposed(by: disposeBag)
-
+        
         RealmManager.shared.favoriteUpdates
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] _ in self?.reactor?.action.onNext(.loadFavorites) })
             .disposed(by: disposeBag)
-
+        
         
     }
 }

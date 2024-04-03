@@ -122,7 +122,6 @@ class CardDetailViewController: UIViewController {
             
             let isFavoriteNow: Bool
             if let realmCard = RealmManager.shared.getCard(withId: self.card.id) {
-                // 현재 즐겨찾기 상태를 반전시키고 데이터베이스 업데이트
                 isFavoriteNow = !realmCard.isFavorite
                 RealmManager.shared.updateFavorite(for: self.card.id, isFavorite: isFavoriteNow)
             } else {
