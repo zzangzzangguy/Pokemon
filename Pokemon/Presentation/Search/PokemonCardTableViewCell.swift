@@ -94,7 +94,7 @@ class PokemonCardTableViewCell: UITableViewCell {
     func configure(with card: PokemonCard, isFavorite: Bool) {
         cardInfo = card
         nameLabel.text = card.name
-        hpLabel.text = card.hp.map { "HP: \($0)" } ?? "HP: -"
+        hpLabel.text = card.hp.map { "HP: \($0)" } ?? "HP: N/A"
         favoriteButton.isSelected = isFavorite
         animateFavoriteButton(isSelected: isFavorite)
 

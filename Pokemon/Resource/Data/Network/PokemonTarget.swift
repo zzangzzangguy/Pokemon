@@ -37,17 +37,21 @@ extension PokemonTarget: TargetType {
     var task: Task {
         switch self {
         case .fetchCards(let parameters):
-            return .requestParameters(
-                parameters: parameters,
-                encoding: URLEncoding.default
-            )
+            var params = parameters
+
+            params["pageSize"] = params["pageSize"] ?? 20
+
+            params["page"] = params["page"] ?? 1
+
+            return .requestParameters(parameters: params, encoding: URLEncoding.default)
         }
     }
 
-    var headers: [String : String]? {
+    var headers: [String: String]? {
         return [
             "Content-Type": "application/json",
             "X-Api-Key": APIKeyManager.shared.apiKey
         ]
     }
+
 }

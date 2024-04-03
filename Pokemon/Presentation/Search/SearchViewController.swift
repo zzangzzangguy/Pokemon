@@ -14,7 +14,11 @@ import RxCocoa
 import ReactorKit
 
 final class SearchViewController: BaseViewController, ReactorKit.View {
+
     // MARK: - Properties
+    private let itemsPerPage = 5
+    private var isLoading = false
+
     private let FilterControl = UISegmentedControl(items: ["All", "Common", "Uncommon", "Rare"]).then {
         $0.selectedSegmentIndex = 0
     }
@@ -36,13 +40,13 @@ final class SearchViewController: BaseViewController, ReactorKit.View {
         $0.layer.shadowOffset = CGSize(width: 0, height: 2)
         $0.layer.shadowRadius = 4
     }
-    
+
     // MARK: - Initialization
     required init(reactor: SearchReactor) {
         super.init()
         self.reactor = reactor
     }
-    
+
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,7 +58,7 @@ final class SearchViewController: BaseViewController, ReactorKit.View {
         super.viewWillAppear(animated)
         reactor?.action.onNext(.loadFavorites)
     }
-    
+
     // MARK: - Binding
     func bind(reactor: SearchReactor) {
         // Action
@@ -64,41 +68,43 @@ final class SearchViewController: BaseViewController, ReactorKit.View {
             .map { Reactor.Action.updateSearchQuery($0) }
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
-        
+
         searchController.searchBar.rx.searchButtonClicked
             .withLatestFrom(searchController.searchBar.rx.text.orEmpty)
             .filter { !$0.isEmpty }
             .map { Reactor.Action.search($0) }
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
-        
+
         tableView.rx.contentOffset
             .filter { [weak self] offset in
-                guard let self = self else { return false }
+                guard let `self` = self else { return false }
+                guard self.tableView.frame.height > 0 else { return false }
                 return offset.y + self.tableView.frame.height >= self.tableView.contentSize.height - 100
             }
+            .filter { _ in !self.isLoading }
             .map { _ in Reactor.Action.loadNextPage }
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
-        
+
         scrollToTopButton.rx.tap
             .map { Reactor.Action.scrollTop }
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
-        
+
         // State
         reactor.state
             .map { $0.isLoading }
             .distinctUntilChanged()
             .bind(to: loadingIndicator.rx.isAnimating)
             .disposed(by: disposeBag)
-        
+
         reactor.state
             .map { !$0.isLoading }
             .distinctUntilChanged()
             .bind(to: loadingIndicator.rx.isHidden)
             .disposed(by: disposeBag)
-        
+
         reactor.state
             .map { $0.searchResult }
             .distinctUntilChanged()
@@ -107,8 +113,6 @@ final class SearchViewController: BaseViewController, ReactorKit.View {
                 cellType: PokemonCardTableViewCell.self)) { [weak self] _, item, cell in
                     guard let self = self else { return }
                     let isFavorite = RealmManager.shared.getCard(withId: item.id)?.isFavorite ?? false
-//                    print("셀 구성 - 이름: \(item.name), HP: \(item.hp ?? "-"), isFavorite: \(isFavorite)")
-
                     cell.configure(with: item, isFavorite: isFavorite)
                     cell.favoriteButton.rx.tap
                         .subscribe(onNext: { [weak self, weak cell] _ in
@@ -120,14 +124,14 @@ final class SearchViewController: BaseViewController, ReactorKit.View {
                             self.reactor?.action.onNext(.updateFavoriteStatus(item.id, isFavorite))
                         })
                         .disposed(by: cell.disposeBag)
-            }
-            .disposed(by: disposeBag)
+                }
+                .disposed(by: disposeBag)
 
         reactor.state
             .map { $0.noResults }
             .distinctUntilChanged()
             .observe(on: MainScheduler.instance)
-        
+
             .filter { $0 == true }
             .bind(onNext: { [weak self] noResults in
                 if noResults {
@@ -136,7 +140,7 @@ final class SearchViewController: BaseViewController, ReactorKit.View {
                 }
             })
             .disposed(by: disposeBag)
-        
+
         reactor.state
             .map { $0.scrollTop }
             .distinctUntilChanged()
@@ -167,7 +171,7 @@ final class SearchViewController: BaseViewController, ReactorKit.View {
             .distinctUntilChanged()
             .bind(to: scrollToTopButton.rx.isHidden)
             .disposed(by: disposeBag)
-        
+
         FilterControl.rx.selectedSegmentIndex
             .map { index -> String in
                 let rarity = self.FilterControl.titleForSegment(at: index) ?? ""
@@ -177,9 +181,9 @@ final class SearchViewController: BaseViewController, ReactorKit.View {
             .map { Reactor.Action.selectRarity($0) }
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
-        
+
     }
-    
+
     // MARK: - Helpers
     override func setView() {
         super.setView()
@@ -216,7 +220,7 @@ final class SearchViewController: BaseViewController, ReactorKit.View {
         tableView.register(PokemonCardTableViewCell.self,
                            forCellReuseIdentifier: PokemonCardTableViewCell.reuseIdentifier)
         tableView.rx.setDelegate(self).disposed(by: disposeBag)
-        
+
         searchController.searchBar.autocorrectionType = .no
         searchController.searchBar.spellCheckingType = .no
     }
@@ -240,15 +244,15 @@ extension SearchViewController: UITableViewDelegate {
         guard let selectedItem = reactor?.currentState.searchResult[indexPath.row] else {
             return
         }
-        
-        let detailVC = CardDetailViewController(card: selectedItem)
-              detailVC.favoriteStatusChanged
-                  .subscribe(onNext: { [weak self] isFavorite in
-                      guard let self = self else { return }
-                      self.reactor?.action.onNext(.updateFavoriteStatus(selectedItem.id, isFavorite))
-                  })
-                  .disposed(by: disposeBag)
 
-              navigationController?.pushViewController(detailVC, animated: true)
-          }
-      }
+        let detailVC = CardDetailViewController(card: selectedItem)
+        detailVC.favoriteStatusChanged
+            .subscribe(onNext: { [weak self] isFavorite in
+                guard let self = self else { return }
+                self.reactor?.action.onNext(.updateFavoriteStatus(selectedItem.id, isFavorite))
+            })
+            .disposed(by: disposeBag)
+
+        navigationController?.pushViewController(detailVC, animated: true)
+    }
+}

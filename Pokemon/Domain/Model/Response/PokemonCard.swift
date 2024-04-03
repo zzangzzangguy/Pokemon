@@ -9,8 +9,12 @@ import Foundation
 
 struct PokemonCards: Codable {
     let data: [PokemonCard]
+    let totalCount: Int
+    let pageSize: Int
+    let count: Int
+    let page: Int
+    
 }
-
 struct PokemonCard: Codable {
     let id: String
     let name: String
