@@ -15,7 +15,26 @@ enum FilterHelper {
         case "Uncommon":
             return ["Uncommon"]
         case "Rare":
-            return ["Rare", "Rare Holo", "Rare Prime", "Rare Prism Star", "Rare Holo EX", "Rare Holo GX", "Rare Holo LV.X", "Rare Holo V", "Rare Holo VMAX", "Rare Rainbow", "Rare Shining", "Rare Secret", "Rare Shiny", "Rare Shiny GX"]
+            return ["Promo",
+                    "Rare",
+                    "Rare ACE",
+                    "Rare BREAK",
+                    "Rare Holo",
+                    "Rare Holo EX",
+                    "Rare Holo GX",
+                    "Rare Holo LV.X",
+                    "Rare Holo Star",
+                    "Rare Holo V",
+                    "Rare Holo VMAX",
+                    "Rare Prime",
+                    "Rare Prism Star",
+                    "Rare Rainbow",
+                    "Rare Secret",
+                    "Rare Shining",
+                    "Rare Shiny",
+                    "Rare Shiny GX",
+                    "Rare Ultra",
+            "LEGEND"]
         default:
             return []
         }

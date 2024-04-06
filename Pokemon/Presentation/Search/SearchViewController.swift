@@ -158,6 +158,7 @@ final class SearchViewController: BaseViewController, ReactorKit.View {
                 self?.navigationController?.pushViewController(detailVC, animated: true)
             })
             .disposed(by: disposeBag)
+        
         reactor.state
             .map { $0.favorites }
             .distinctUntilChanged()

@@ -7,6 +7,8 @@
 import ReactorKit
 import RxSwift
 import RealmSwift
+import Toast
+import UIKit
 
 final class FavoriteReactor: Reactor {
     var initialState: State = State()
@@ -57,6 +59,10 @@ final class FavoriteReactor: Reactor {
                 RealmManager.shared.updateFavorite(for: cardID, with: card, isFavorite: isFavorite)
                 if let updatedCard = RealmManager.shared.getCard(withId: cardID)?.toPokemonCard() {
                     print("즐겨찾기 상태 변경됨 - 이름: \(updatedCard.name), 타입: \(updatedCard.types?.joined(separator: ", ") ?? "-"), 등급: \(updatedCard.rarity ?? "-"), HP: \(updatedCard.hp ?? "-")")
+                    let toastMessage = isFavorite ? "\(updatedCard.name)이(가) 즐겨찾기에 추가되었습니다." : "\(updatedCard.name)이(가) 즐겨찾기에서 제거되었습니다."
+                    DispatchQueue.main.async {
+                        UIApplication.shared.windows.first?.makeToast(toastMessage)
+                    }
                 }
             }
             let favorites = Array(RealmManager.shared.getFavoriteCards())

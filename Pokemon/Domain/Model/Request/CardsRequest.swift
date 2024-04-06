@@ -15,11 +15,10 @@ struct CardsRequest {
     var type: String?
     var select: String?
 
-
     init(
         query: String? = nil,
         page: Int? = 1,
-        pageSize: Int? = 1,
+        pageSize: Int? = 20,
         rarity: String? = nil,
         type: String? = nil,
         select: String? = nil
@@ -30,7 +29,6 @@ struct CardsRequest {
         self.rarity = rarity
         self.type = type
         self.select = select
-
     }
 
     var toDictionary: [String: Any] {
@@ -44,10 +42,10 @@ struct CardsRequest {
         if let rarity = rarity {
             queryItems.append("rarity:\(rarity)")
         }
+
         if let type = type {
             queryItems.append("type:\(type)")
         }
-
 
         if !queryItems.isEmpty {
             dictionary["q"] = queryItems.joined(separator: " ")
@@ -60,13 +58,13 @@ struct CardsRequest {
         if let pageSize = pageSize {
             dictionary["page_size"] = pageSize
         }
+
         if let select = select {
-            dictionary["select"] = select 
+            dictionary["select"] = select
         }
 
-
-        print("Request Parameters: \(dictionary)")
-        print("Sending request with parameters: page_size=\(pageSize), page=\(page), q=\(query)")
+//        print("Request Parameters: \(dictionary)")
+//        print("dd: page_size=\(pageSize ?? 0), page=\(page ?? 0), q=\(queryItems.joined(separator: " "))")
 
         return dictionary
     }

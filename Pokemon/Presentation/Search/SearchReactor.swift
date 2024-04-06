@@ -9,6 +9,9 @@ import ReactorKit
 import RxSwift
 import RealmSwift
 import Realm
+import Toast
+import UIKit
+
 
 class SearchReactor: Reactor {
     enum Action {
@@ -52,8 +55,8 @@ class SearchReactor: Reactor {
         var page: Int = 1
         var pageSize: Int = 10
         var error: Error?
-        var currentPage: Int = 1
-        var totalPages: Int = 1
+        //        var currentPage: Int = 1
+        //        var totalPages: Int = 1
     }
 
     var initialState = State()
@@ -87,19 +90,13 @@ class SearchReactor: Reactor {
                 .just(.setNoResults(false))
             ])
 
-        case .search(var query):
+        case .search(let query):
             let initialPage = 1
             let rarity = currentState.selectedRarity == "All" ? nil : currentState.selectedRarity
-
-            if !query.contains("select=") {
-                query += "&select=id,name,images"
-            }
-
 
             return .concat([
                 .just(.setLoading(true)),
                 .just(.setNoResults(false)),
-                .just(.resetPagination(page: initialPage, pageSize: initialState.pageSize)),
                 searchQuery(query: query, page: initialPage, rarity: rarity)
                     .map { response in
                         if response.data.isEmpty {
@@ -113,26 +110,45 @@ class SearchReactor: Reactor {
             ])
 
         case .loadNextPage:
-            guard !currentState.isLoading else {
+            guard !currentState.isLoading, currentState.canLoadMore else {
+                DispatchQueue.main.async {
+                    UIApplication.shared.windows.first?.makeToast("더 이상 로드할 데이터가 없습니다.")
+                }
                 return .empty()
             }
 
             let nextPage = currentState.page + 1
             let query = currentState.query
             let rarity = currentState.selectedRarity == "All" ? nil : currentState.selectedRarity
-
+            print("LoadNextPage action: nextPage = \(nextPage), rarity = \(String(describing: rarity))")
             return .concat([
                 .just(.setLoading(true)),
                 .just(.setPage(nextPage)),
                 searchQuery(query: query, page: nextPage, rarity: rarity)
                     .map { response in
-                        let oldData = self.currentState.searchResult
-                        let newData = oldData + response.data
-                        return .setSearchResults(newData)
+                            .appendSearchResults(response.data)
                     }
                     .catch { .just(.setError($0)) },
                 .just(.setLoading(false))
             ])
+
+            //            return .concat([
+            //                .just(.setLoading(true)),
+            //                .just(.setPage(nextPage)),
+            //                searchQuery(query: query, page: nextPage, rarity: rarity)
+            //                    .map { response in
+            //                        let newData = self.currentState.searchResult + response.data
+            //                        print("Received data for page \(nextPage) with rarity \(String(describing: rarity)): \(response.data.count) items")
+            //                        return .appendSearchResults(response.data)
+            //                        //                        let oldData = self.currentState.searchResult
+            //                        //                        let newData = oldData + response.data
+            //                        //                        print("Received data for page \(nextPage) with rarity \(String(describing: rarity)): \(response.data.count) items")
+            //                        //
+            //                        //                        return .setSearchResults(newData)
+            //                    }
+            //                    .catch { .just(.setError($0)) },
+            //                .just(.setLoading(false))
+            //            ])
         case .scrollTop:
             return .concat([
                 .just(.setScrollTop(true)),
@@ -140,11 +156,15 @@ class SearchReactor: Reactor {
             ])
 
         case .updateFavoriteStatus(let cardID, let isFavorite):
+
             if let card = currentState.searchResult.first(where: { $0.id == cardID }) {
                 RealmManager.shared.updateFavorite(for: cardID, with: card, isFavorite: isFavorite)
-
                 if let updatedCard = RealmManager.shared.getCard(withId: cardID)?.toPokemonCard() {
-                    print("카드 이름: \(updatedCard.name), HP: \(updatedCard.hp ?? "-"), 타입: \(updatedCard.types?.joined(separator: ", ") ?? "-"), 등급: \(updatedCard.rarity ?? "-")")
+                    let toastMessage = isFavorite ? "\(card.name)이(가) 즐겨찾기에 추가되었습니다." : "\(card.name)이(가) 즐겨찾기에서 제거되었습니다."
+                    DispatchQueue.main.async {
+                        UIApplication.shared.windows.first?.makeToast(toastMessage)
+                    }
+
                 }
             }
 
@@ -156,20 +176,39 @@ class SearchReactor: Reactor {
             return Observable.just(Mutation.setSelectedItem(card))
 
         case .selectRarity(let rarity):
-            let searchRarity = rarity == "All" ? nil : rarity
             let query = currentState.query
+            // 페이지네이션을 위한 상태 초기화
+            let page = 1
+            let pageSize = currentState.pageSize
+            let searchRarity = rarity == "All" ? nil : rarity
 
             return Observable.concat([
                 .just(.setLoading(true)),
-                searchQuery(query: query, page: 1, rarity: searchRarity)
+                .just(.setSelectedRarity(rarity)),
+                .just(.resetPagination(page: page, pageSize: pageSize)),
+                searchQuery(query: query, page: page, rarity: searchRarity)
                     .map { response in
-                            .setSearchResults(response.data)
+                        return .setSearchResults(response.data)
                     }
-                    .catch { error in
-                            .just(.setError(error))
-                    },
+                    .catch { .just(.setError($0)) },
                 .just(.setLoading(false))
             ])
+
+            //            let searchRarity = rarity == "All" ? nil : rarity
+            //            let query = currentState.query
+            //
+            //            return Observable.concat([
+            //                .just(.setLoading(true)),
+            //                .just(.resetPagination(page: 1, pageSize: currentState.pageSize)), // 페이지네이션 상태 초기화
+            //                searchQuery(query: query, page: 1, rarity: searchRarity)
+            //                    .map { response in
+            //                            .setSearchResults(response.data)
+            //                    }
+            //                    .catch { error in
+            //                            .just(.setError(error))
+            //                    },
+            //                .just(.setLoading(false))
+            //            ])
 
         case .loadFavorites:
             let favorites = Array(RealmManager.shared.getFavoriteCards())
@@ -197,6 +236,7 @@ class SearchReactor: Reactor {
 
         case .setCanLoadMore(let canLoadMore):
             newState.canLoadMore = canLoadMore
+
 
         case .setNoResults(let noResults):
             newState.noResults = noResults
@@ -233,10 +273,14 @@ class SearchReactor: Reactor {
     }
 
     private func searchQuery(query: String?, page: Int, rarity: String?) -> Observable<PokemonCards> {
-        var request = CardsRequest(query: query, page: page, pageSize: currentState.pageSize, rarity: rarity)
+        var request = CardsRequest(query: query, page: page, pageSize: currentState.pageSize)
 
         if let query = query {
             request.select = "id,name,images,hp,types,rarity"
+        }
+
+        if let rarity = rarity {
+            request.rarity = rarity
         }
 
         return Observable.create { observer in
@@ -246,8 +290,10 @@ class SearchReactor: Reactor {
                     let loadedCount = response.data.count
                     let pageSize = response.pageSize
                     let canLoadMore = loadedCount == pageSize
+                    let totalCount = response.totalCount
+                    let count = response.count
                     observer.onNext(response)
-                    print("Page \(response.page) loaded with \(loadedCount) items, pageSize: \(pageSize), canLoadMore: \(canLoadMore)")
+                    print("Page \(response.page) loaded with \(loadedCount) items, pageSize: \(pageSize), totalCount: \(totalCount), canLoadMore: \(canLoadMore), count: \(count)")
                 case .failure(let error):
                     observer.onError(error)
                 }
@@ -256,7 +302,6 @@ class SearchReactor: Reactor {
             return Disposables.create()
         }
     }
-
     private func filterRarities(_ selectedRarity: String) -> [String] {
         return FilterHelper.filterRarities(selectedRarity)
     }

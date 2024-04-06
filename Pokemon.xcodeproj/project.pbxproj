@@ -16,6 +16,8 @@
 		4E4895312B85F41100503703 /* SearchReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E4895302B85F41100503703 /* SearchReactor.swift */; };
 		4E4895362B8A06DA00503703 /* PokemonCardTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E4895352B8A06DA00503703 /* PokemonCardTableViewCell.swift */; };
 		4E847B792BB572B600734DEF /* FilterHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E847B782BB572B600734DEF /* FilterHelper.swift */; };
+		4E847B852BBEC53300734DEF /* Toast in Frameworks */ = {isa = PBXBuildFile; productRef = 4E847B842BBEC53300734DEF /* Toast */; };
+		4E847B862BBFF93B00734DEF /* CardsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA17A002B7B3584006A1D51 /* CardsRequest.swift */; };
 		4E8F08932BA83ABE00DF11B2 /* RealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E8F08922BA83ABE00DF11B2 /* RealmManager.swift */; };
 		4E8F08972BA858A900DF11B2 /* CardDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E8F08962BA858A900DF11B2 /* CardDetailViewController.swift */; };
 		4E8F08992BAC194A00DF11B2 /* FavoriteReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E8F08982BAC194A00DF11B2 /* FavoriteReactor.swift */; };
@@ -28,7 +30,6 @@
 		4EA179FB2B7A1372006A1D51 /* PokemonRepositoryType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA179FA2B7A1372006A1D51 /* PokemonRepositoryType.swift */; };
 		4EA179FD2B7A1573006A1D51 /* PokemonRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA179FC2B7A1573006A1D51 /* PokemonRepository.swift */; };
 		4EA179FF2B7A849F006A1D51 /* APIKeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA179FE2B7A849E006A1D51 /* APIKeyManager.swift */; };
-		4EA17A012B7B3584006A1D51 /* CardsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA17A002B7B3584006A1D51 /* CardsRequest.swift */; };
 		4EACAF092BA5513200BE4109 /* RealmPokeonCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EACAF082BA5513200BE4109 /* RealmPokeonCard.swift */; };
 		B400DAF62B76187200530566 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B400DAF52B76187200530566 /* AppDelegate.swift */; };
 		B400DAF82B76187200530566 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B400DAF72B76187200530566 /* SceneDelegate.swift */; };
@@ -117,6 +118,7 @@
 				4E3453242BB03F2500079366 /* SnapKit in Frameworks */,
 				4E34532F2BB044CC00079366 /* Alamofire in Frameworks */,
 				4E930AC42BB05E5100CB9542 /* ReactorKit in Frameworks */,
+				4E847B852BBEC53300734DEF /* Toast in Frameworks */,
 				4E9634372BB01C6D00786C6C /* Kingfisher in Frameworks */,
 				4E34532C2BB041A200079366 /* Moya in Frameworks */,
 				4E3453212BB02AA900079366 /* RxDataSources in Frameworks */,
@@ -461,6 +463,7 @@
 				4E34532B2BB041A200079366 /* Moya */,
 				4E34532E2BB044CC00079366 /* Alamofire */,
 				4E930AC32BB05E5100CB9542 /* ReactorKit */,
+				4E847B842BBEC53300734DEF /* Toast */,
 			);
 			productName = Pokemon;
 			productReference = B400DAF22B76187200530566 /* Pokemon.app */;
@@ -544,6 +547,7 @@
 				4E3453282BB03FA400079366 /* XCRemoteSwiftPackageReference "realm-swift" */,
 				4E34532D2BB044CC00079366 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				4E930AC22BB05E5100CB9542 /* XCRemoteSwiftPackageReference "ReactorKit" */,
+				4E847B832BBEC53300734DEF /* XCRemoteSwiftPackageReference "Toast-Swift" */,
 			);
 			productRefGroup = B400DAF32B76187200530566 /* Products */;
 			projectDirPath = "";
@@ -585,8 +589,8 @@
 				B400DAF62B76187200530566 /* AppDelegate.swift in Sources */,
 				4EACAF092BA5513200BE4109 /* RealmPokeonCard.swift in Sources */,
 				4EA179F82B7A1342006A1D51 /* PokemonTarget.swift in Sources */,
+				4E847B862BBFF93B00734DEF /* CardsRequest.swift in Sources */,
 				4E8F08992BAC194A00DF11B2 /* FavoriteReactor.swift in Sources */,
-				4EA17A012B7B3584006A1D51 /* CardsRequest.swift in Sources */,
 				B4401AC12B8247DA0064166C /* BaseCollectionViewCell.swift in Sources */,
 				B4401ACC2B8350A20064166C /* CardListReactor.swift in Sources */,
 				B4401AC42B8248200064166C /* ReusableView+Ex.swift in Sources */,
@@ -989,6 +993,14 @@
 				minimumVersion = 5.9.0;
 			};
 		};
+		4E847B832BBEC53300734DEF /* XCRemoteSwiftPackageReference "Toast-Swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/scalessec/Toast-Swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.1.0;
+			};
+		};
 		4E930AC22BB05E5100CB9542 /* XCRemoteSwiftPackageReference "ReactorKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ReactorKit/ReactorKit.git";
@@ -1053,6 +1065,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4E34532D2BB044CC00079366 /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
+		};
+		4E847B842BBEC53300734DEF /* Toast */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4E847B832BBEC53300734DEF /* XCRemoteSwiftPackageReference "Toast-Swift" */;
+			productName = Toast;
 		};
 		4E930AC32BB05E5100CB9542 /* ReactorKit */ = {
 			isa = XCSwiftPackageProductDependency;

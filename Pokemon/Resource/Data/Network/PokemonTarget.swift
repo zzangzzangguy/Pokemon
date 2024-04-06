@@ -43,6 +43,14 @@ extension PokemonTarget: TargetType {
 
             params["page"] = params["page"] ?? 1
 
+            if let rarity = params["rarity"] as? String, !rarity.isEmpty {
+                       params["rarity"] = rarity
+                   } else {
+                       params.removeValue(forKey: "rarity")
+                   }
+            print("포켓몬 타겟 파라미터: \(params)")
+
+
             return .requestParameters(parameters: params, encoding: URLEncoding.default)
         }
     }
