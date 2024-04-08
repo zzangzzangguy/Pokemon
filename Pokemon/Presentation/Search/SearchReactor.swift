@@ -70,17 +70,30 @@ class SearchReactor: Reactor {
         initialState = State(favorites: favoriteCards)
 
         AppState.shared.favoriteStatusChanged
-            .map { cardID in
+            .subscribe(onNext: { [weak self] cardID in
+                guard let self = self else { return }
                 if let index = self.currentState.searchResult.firstIndex(where: { $0.id == cardID }) {
                     let updatedCard = self.currentState.searchResult[index]
                     let isFavorite = RealmManager.shared.getCard(withId: cardID)?.isFavorite ?? false
-                    return Action.updateFavoriteStatus(updatedCard.id, isFavorite)
+                    self.action.onNext(.updateFavoriteStatus(updatedCard.id, isFavorite))
+                } else {
+                    self.action.onNext(.loadFavorites)
                 }
-                return Action.loadFavorites
-            }
-            .bind(to: action)
+            })
             .disposed(by: disposeBag)
     }
+//        AppState.shared.favoriteStatusChanged
+//            .map { cardID in
+//                if let index = self.currentState.searchResult.firstIndex(where: { $0.id == cardID }) {
+//                    let updatedCard = self.currentState.searchResult[index]
+//                    let isFavorite = RealmManager.shared.getCard(withId: cardID)?.isFavorite ?? false
+//                    return Action.updateFavoriteStatus(updatedCard.id, isFavorite)
+//                }
+//                return Action.loadFavorites
+//            }
+//            .bind(to: action)
+//            .disposed(by: disposeBag)
+//    }
 
     func mutate(action: Action) -> Observable<Mutation> {
         switch action {
@@ -132,23 +145,6 @@ class SearchReactor: Reactor {
                 .just(.setLoading(false))
             ])
 
-            //            return .concat([
-            //                .just(.setLoading(true)),
-            //                .just(.setPage(nextPage)),
-            //                searchQuery(query: query, page: nextPage, rarity: rarity)
-            //                    .map { response in
-            //                        let newData = self.currentState.searchResult + response.data
-            //                        print("Received data for page \(nextPage) with rarity \(String(describing: rarity)): \(response.data.count) items")
-            //                        return .appendSearchResults(response.data)
-            //                        //                        let oldData = self.currentState.searchResult
-            //                        //                        let newData = oldData + response.data
-            //                        //                        print("Received data for page \(nextPage) with rarity \(String(describing: rarity)): \(response.data.count) items")
-            //                        //
-            //                        //                        return .setSearchResults(newData)
-            //                    }
-            //                    .catch { .just(.setError($0)) },
-            //                .just(.setLoading(false))
-            //            ])
         case .scrollTop:
             return .concat([
                 .just(.setScrollTop(true)),
@@ -156,10 +152,15 @@ class SearchReactor: Reactor {
             ])
 
         case .updateFavoriteStatus(let cardID, let isFavorite):
-
             if let card = currentState.searchResult.first(where: { $0.id == cardID }) {
                 RealmManager.shared.updateFavorite(for: cardID, with: card, isFavorite: isFavorite)
-                if let updatedCard = RealmManager.shared.getCard(withId: cardID)?.toPokemonCard() {
+
+                RealmManager.shared.favoriteUpdateSubject.onNext(())
+
+                let favoriteReactor = FavoriteReactor()
+                        favoriteReactor.action.onNext(.loadFavorites)
+
+                if (RealmManager.shared.getCard(withId: cardID)?.toPokemonCard()) != nil {
                     let toastMessage = isFavorite ? "\(card.name)이(가) 즐겨찾기에 추가되었습니다." : "\(card.name)이(가) 즐겨찾기에서 제거되었습니다."
                     DispatchQueue.main.async {
                         UIApplication.shared.windows.first?.makeToast(toastMessage)

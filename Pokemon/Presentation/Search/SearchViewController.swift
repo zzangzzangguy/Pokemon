@@ -10,7 +10,6 @@ import UIKit
 import SnapKit
 import RxSwift
 import RxCocoa
-//import RxDataSources
 import ReactorKit
 
 final class SearchViewController: BaseViewController, ReactorKit.View {

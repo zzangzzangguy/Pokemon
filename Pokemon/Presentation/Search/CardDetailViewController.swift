@@ -132,7 +132,6 @@ class CardDetailViewController: UIViewController {
             }
             
             self.favoriteButton.isSelected = isFavoriteNow
-            // 상태 변경을 PublishSubject를 통해 알림
             self.favoriteStatusChanged.onNext(isFavoriteNow)
         }
     }

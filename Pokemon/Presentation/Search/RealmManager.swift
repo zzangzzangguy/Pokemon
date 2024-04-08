@@ -12,7 +12,7 @@ import RxSwift
 class RealmManager {
     static let shared = RealmManager()
     private let realm: Realm
-    private let favoriteUpdateSubject = PublishSubject<Void>()
+    let favoriteUpdateSubject = PublishSubject<Void>()
     var favoriteUpdates: Observable<Void> {
            return favoriteUpdateSubject.asObservable()
        }
@@ -24,7 +24,6 @@ class RealmManager {
                 schemaVersion: 3, // 스키마 버전 설정
                 migrationBlock: { migration, oldSchemaVersion in
                     if oldSchemaVersion < 3 {
-                        // 새로운 프로퍼티 추가 마이그레이션 코드
                         migration.enumerateObjects(ofType: RealmPokemonCard.className()) { _, newObject in
                             newObject?["types"] = List<String>()
                             newObject?["rarity"] = ""

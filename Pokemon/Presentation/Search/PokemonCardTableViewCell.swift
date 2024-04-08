@@ -6,7 +6,6 @@
 //
 
 // PokemonCardTableViewCell.swift
-// PokemonCardTableViewCell.swift
 import UIKit
 import Kingfisher
 import Then
