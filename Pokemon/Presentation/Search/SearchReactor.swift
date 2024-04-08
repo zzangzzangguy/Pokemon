@@ -82,18 +82,18 @@ class SearchReactor: Reactor {
             })
             .disposed(by: disposeBag)
     }
-//        AppState.shared.favoriteStatusChanged
-//            .map { cardID in
-//                if let index = self.currentState.searchResult.firstIndex(where: { $0.id == cardID }) {
-//                    let updatedCard = self.currentState.searchResult[index]
-//                    let isFavorite = RealmManager.shared.getCard(withId: cardID)?.isFavorite ?? false
-//                    return Action.updateFavoriteStatus(updatedCard.id, isFavorite)
-//                }
-//                return Action.loadFavorites
-//            }
-//            .bind(to: action)
-//            .disposed(by: disposeBag)
-//    }
+    //        AppState.shared.favoriteStatusChanged
+    //            .map { cardID in
+    //                if let index = self.currentState.searchResult.firstIndex(where: { $0.id == cardID }) {
+    //                    let updatedCard = self.currentState.searchResult[index]
+    //                    let isFavorite = RealmManager.shared.getCard(withId: cardID)?.isFavorite ?? false
+    //                    return Action.updateFavoriteStatus(updatedCard.id, isFavorite)
+    //                }
+    //                return Action.loadFavorites
+    //            }
+    //            .bind(to: action)
+    //            .disposed(by: disposeBag)
+    //    }
 
     func mutate(action: Action) -> Observable<Mutation> {
         switch action {
@@ -123,7 +123,11 @@ class SearchReactor: Reactor {
             ])
 
         case .loadNextPage:
-            guard !currentState.isLoading, currentState.canLoadMore else {
+            guard !currentState.isLoading else {
+                return .empty()
+            }
+
+            guard currentState.canLoadMore else {
                 DispatchQueue.main.async {
                     UIApplication.shared.windows.first?.makeToast("더 이상 로드할 데이터가 없습니다.")
                 }
@@ -133,18 +137,24 @@ class SearchReactor: Reactor {
             let nextPage = currentState.page + 1
             let query = currentState.query
             let rarity = currentState.selectedRarity == "All" ? nil : currentState.selectedRarity
-            print("LoadNextPage action: nextPage = \(nextPage), rarity = \(String(describing: rarity))")
+
+            //            print("LoadNextPage action: nextPage = \(nextPage), rarity = \(String(describing: rarity))")
             return .concat([
                 .just(.setLoading(true)),
                 .just(.setPage(nextPage)),
                 searchQuery(query: query, page: nextPage, rarity: rarity)
                     .map { response in
-                            .appendSearchResults(response.data)
+                        guard !response.data.isEmpty else {
+                            DispatchQueue.main.async {
+                                UIApplication.shared.windows.first?.makeToast("더 이상 로드할 데이터가 없습니다.")
+                            }
+                            return .setCanLoadMore(false)
+                        }
+                        return .appendSearchResults(response.data)
                     }
                     .catch { .just(.setError($0)) },
                 .just(.setLoading(false))
             ])
-
         case .scrollTop:
             return .concat([
                 .just(.setScrollTop(true)),
@@ -158,7 +168,7 @@ class SearchReactor: Reactor {
                 RealmManager.shared.favoriteUpdateSubject.onNext(())
 
                 let favoriteReactor = FavoriteReactor()
-                        favoriteReactor.action.onNext(.loadFavorites)
+                favoriteReactor.action.onNext(.loadFavorites)
 
                 if (RealmManager.shared.getCard(withId: cardID)?.toPokemonCard()) != nil {
                     let toastMessage = isFavorite ? "\(card.name)이(가) 즐겨찾기에 추가되었습니다." : "\(card.name)이(가) 즐겨찾기에서 제거되었습니다."

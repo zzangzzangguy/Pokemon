@@ -62,8 +62,8 @@
             filePath = "Pokemon/Presentation/Search/SearchReactor.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "182"
-            endingLineNumber = "182"
+            startingLineNumber = "192"
+            endingLineNumber = "192"
             landmarkName = "mutate(action:)"
             landmarkType = "7">
          </BreakpointContent>
